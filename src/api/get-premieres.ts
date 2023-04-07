@@ -13,12 +13,11 @@ export async function getPremieres(
   month = getDefaultMonth()
 ): Promise<Movie[]> {
   return api
-    .get(`api/v2.2/films/premieres`, {
-      searchParams: {
+    .get<{ total: number; items: Movie[] }>(`api/v2.2/films/premieres`, {
+      params: {
         year,
         month,
       },
     })
-    .json<{ total: number; items: Movie[] }>()
-    .then((result) => result.items);
+    .then((response) => response.data.items);
 }
