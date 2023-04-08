@@ -1,0 +1,15 @@
+---
+import type { Movie } from "../models/movie.interface";
+
+export interface AstroProps {
+  movie: Movie;
+}
+
+const { movie } = Astro.props;
+---
+
+<div>
+  <pre>
+    {JSON.stringify(movie, undefined, 2)}
+  </pre>
+</div>

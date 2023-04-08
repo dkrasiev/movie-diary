@@ -1,0 +1,11 @@
+---
+import type { Movie } from "../../models/movie.interface";
+import fetch from "../../misc/fetch";
+import MovieCard from "../../components/MovieCard.astro";
+
+const id = Astro.params.id;
+
+const movie = await fetch.get<Movie>(`/api/movies/${id}`);
+---
+
+<MovieCard movie={movie} />
