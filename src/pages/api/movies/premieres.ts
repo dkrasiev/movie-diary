@@ -9,7 +9,7 @@ export const get: APIRoute = async function get({ request }) {
   const url = new URL(request.url);
   const params = Object.fromEntries(url.searchParams);
   const { year, month } = params;
-  if (!year || !month || isMonth(month) === false) {
+  if (!year || isMonth(month) === false) {
     return new Response("Bad request", { status: 400 });
   }
 
