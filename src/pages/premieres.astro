@@ -1,0 +1,13 @@
+---
+import Premieres from "../components/Premieres.astro";
+import Layout from "../layouts/Layout.astro";
+
+export interface Props {
+  columns: number;
+}
+---
+
+<Layout title="Premieres">
+  <h1 class="text-lg py-4">Premieres</h1>
+  <Premieres />
+</Layout>
