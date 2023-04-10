@@ -8,15 +8,12 @@ const premieres: Movie[] = await appApi
   .then((response) => response.data);
 ---
 
-<div>
+<div class="grid gap-4">
   {premieres.map((movie) => <MovieCard movie={movie} />)}
 </div>
 
 <style>
   div {
-    display: grid;
     grid-template-columns: repeat(auto-fill, minmax(16rem, auto));
-    column-gap: 1rem;
-    row-gap: 1rem;
   }
 </style>
