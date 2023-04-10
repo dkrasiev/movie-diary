@@ -1,0 +1,33 @@
+<header class="border px-8">
+  <nav>
+    <a href="/">Movie Diary</a>
+    <ul>
+      <li>
+        <a href="/movies/301">Matrix (test)</a>
+      </li>
+      <li>
+        <a href="/premieres">Premieres</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<style lang="scss">
+  a {
+    @apply p-4;
+
+    &:hover {
+      @apply bg-slate-50;
+    }
+
+    &:active {
+      @apply bg-slate-100;
+    }
+  }
+
+  header,
+  nav,
+  ul {
+    @apply flex items-center;
+  }
+</style>
