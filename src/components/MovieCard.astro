@@ -1,15 +1,16 @@
 ---
 import type { Movie } from "../models/movie.interface";
 
-export interface AstroProps {
+export interface Props {
   movie: Movie;
 }
 
 const { movie } = Astro.props;
 ---
 
-<div>
-  <pre>
-    {JSON.stringify(movie, undefined, 2)}
-  </pre>
-</div>
+<a
+  style={`background-image: url('${movie.posterUrl}')`}
+  class="block rounded-md border bg-cover aspect-[2/3]"
+  href={`/movies/${movie.kinopoiskId}`}
+>
+</a>

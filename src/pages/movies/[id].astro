@@ -1,14 +1,17 @@
 ---
 import MovieCard from "../../components/MovieCard.astro";
+import MovieDescription from "../../components/MovieDescription.astro";
 import Layout from "../../layouts/Layout.astro";
-import fetch from "../../misc/fetch";
+import { appApi } from "../../lib/app-api";
 import type { Movie } from "../../models/movie.interface";
 
 const id = Astro.params.id;
 
-const movie = await fetch.get<Movie>(`/api/movies/${id}`);
+const movie: Movie = await appApi
+  .get(`/api/movies/${id}`)
+  .then((response) => response.data);
 ---
 
 <Layout title={movie.nameOriginal}>
-  <MovieCard movie={movie} />
+  <MovieDescription movie={movie} />
 </Layout>
