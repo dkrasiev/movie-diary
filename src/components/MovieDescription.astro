@@ -1,0 +1,19 @@
+---
+import type { Movie } from "../models/movie.interface";
+
+export interface AstroProps {
+  movie: Movie;
+}
+
+const { movie } = Astro.props as { movie: Movie };
+
+const name = movie.nameOriginal || movie.nameEn || movie.nameRu;
+---
+
+<div>
+  <h1 class="text-lg py-4">
+    {name}
+  </h1>
+  <img src={movie.posterUrl} alt={`${name} poster`} height="450" width="300" />
+  <p>{movie.description}</p>
+</div>
