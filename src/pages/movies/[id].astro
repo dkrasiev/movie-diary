@@ -6,13 +6,22 @@ import type { Movie } from "../../models/movie";
 
 const id = Astro.params.id;
 
-const movie: Movie = await appApi
+const movie: Movie | undefined = await appApi
   .get(`/api/movies/${id}`)
-  .then((response) => response.data);
+  .then((response) => response.data)
+  .catch(() => undefined);
 
-const name = movie.nameOriginal || movie.nameEn || movie.nameRu
+const name = movie?.nameOriginal || movie?.nameEn || movie?.nameRu;
 ---
 
-<Layout title={name}>
-  <MovieDescription movie={movie} />
+<Layout title={name || "Not found"}>
+  {
+    movie ? (
+      <MovieDescription movie={movie} />
+    ) : (
+      <div>
+        <h1>404. Not found</h1>
+      </div>
+    )
+  }
 </Layout>

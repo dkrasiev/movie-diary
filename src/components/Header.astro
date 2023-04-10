@@ -1,5 +1,12 @@
-<header class="border px-8 flex justify-between">
+---
+import MovieSearch from "./MovieSearch.svelte";
+---
+
+<header class="border px-8 flex justify-between items-center">
   <a href="/">Movie Diary</a>
+
+  <MovieSearch client:load />
+
   <nav class="flex items-center">
     <a href="/movies/301">Matrix (test)</a>
     <a href="/premieres">Premieres</a>
