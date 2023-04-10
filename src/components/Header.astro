@@ -1,14 +1,8 @@
-<header class="border px-8">
-  <nav>
-    <a href="/">Movie Diary</a>
-    <ul>
-      <li>
-        <a href="/movies/301">Matrix (test)</a>
-      </li>
-      <li>
-        <a href="/premieres">Premieres</a>
-      </li>
-    </ul>
+<header class="border px-8 flex justify-between">
+  <a href="/">Movie Diary</a>
+  <nav class="flex items-center">
+    <a href="/movies/301">Matrix (test)</a>
+    <a href="/premieres">Premieres</a>
   </nav>
 </header>
 
@@ -23,11 +17,5 @@
     &:active {
       @apply bg-slate-100;
     }
-  }
-
-  header,
-  nav,
-  ul {
-    @apply flex items-center;
   }
 </style>

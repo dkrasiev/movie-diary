@@ -1,5 +1,6 @@
 export interface Movie extends MovieShort {
   description: string;
+  nameOriginal: string;
 }
 
 export interface MovieShort {
