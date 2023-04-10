@@ -1,11 +1,11 @@
 ---
 import type { Movie } from "../models/movie.interface";
 
-export interface AstroProps {
+export interface Props {
   movie: Movie;
 }
 
-const { movie } = Astro.props as { movie: Movie };
+const { movie } = Astro.props;
 
 const name = movie.nameOriginal || movie.nameEn || movie.nameRu;
 ---
