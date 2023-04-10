@@ -12,3 +12,7 @@ export enum Month {
   NOVEMBER = "NOVEMBER",
   DECEMBER = "DECEMBER",
 }
+
+export function isMonth(value: string): value is Month {
+  return Object.keys(Month).includes(value) === true;
+}
