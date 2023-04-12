@@ -14,7 +14,5 @@ export enum Month {
 }
 
 export function isMonth(value: string): value is Month {
-  console.log(value);
-  console.log(Object.keys(Month));
   return Object.keys(Month).includes(value) === true;
 }
