@@ -2,10 +2,12 @@
 import MovieSearch from "./MovieSearch.svelte";
 ---
 
-<header class="border px-8 flex justify-between items-center">
+<header class="relative border px-8 flex justify-between items-center">
   <a href="/">Movie Diary</a>
 
-  <MovieSearch client:load />
+  <div class="absolute left-0 right-0 text-center">
+    <MovieSearch client:load />
+  </div>
 
   <nav class="flex items-center">
     <a href="/movies/301">Matrix (test)</a>
