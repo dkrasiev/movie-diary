@@ -1,5 +1,5 @@
 import type { User } from "@prisma/client";
-import bcrypt from "bcrypt";
+import * as bcrypt from "bcryptjs";
 import { UserDTO } from "../dtos/user-dto";
 import prismaClient from "../prisma-client";
 import { jsonResponse, unauthorizedResponse } from "../responses";
@@ -14,7 +14,7 @@ class AuthService {
       return new Response("User already exists");
     }
 
-    const hashPassword = await bcrypt.hash(password, 10);
+    const hashPassword = bcrypt.hashSync(password, 10);
     const user = await prismaClient.user.create({
       data: { email, password: hashPassword },
     });
@@ -23,7 +23,7 @@ class AuthService {
     const tokens = tokenService.generateTokens({ ...userDto });
     await tokenService.saveToken(user.id, tokens.refresh);
 
-    return jsonResponse(tokens);
+    return tokens;
   }
 
   public async login(email: string, password: string) {
@@ -32,17 +32,15 @@ class AuthService {
       return unauthorizedResponse();
     }
 
-    const hashPassword = await bcrypt.hash(password, 10);
-    if (user.password !== hashPassword) {
+    if (bcrypt.compareSync(password, user.password) === false) {
       return unauthorizedResponse();
     }
 
     const userDto = new UserDTO(user);
-
     const tokens = tokenService.generateTokens({ ...userDto });
     await tokenService.saveToken(user.id, tokens.refresh);
 
-    return jsonResponse(tokens);
+    return tokens;
   }
 
   public async refresh(email: string, refreshToken: string) {

@@ -9,7 +9,11 @@ export const post: APIRoute = async ({ request }) => {
     return badRequestResponse();
   }
 
-  const user = await authService.login(email, password);
+  const result = await authService.login(email, password);
 
-  return jsonResponse(user);
+  if (result instanceof Response) {
+    return result;
+  }
+
+  return jsonResponse(result);
 };
