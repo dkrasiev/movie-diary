@@ -1,9 +1,9 @@
 import type { APIRoute } from "astro";
-import { getPremieres } from "../../../api/get-premieres";
 import { Month, isMonth } from "../../../models/month";
 import type { MovieShort } from "../../../models/movie";
 import { getJson, setJson } from "../../../lib/redis-client";
 import { badRequestResponse, jsonResponse } from "../../../lib/responses";
+import { getPremieres } from "../../../lib/kinopoisk-api/get-premieres";
 
 export const get: APIRoute = async function get({ request }) {
   const url = new URL(request.url);

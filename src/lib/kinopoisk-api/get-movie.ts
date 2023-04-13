@@ -1,4 +1,4 @@
-import { kinopoiskApi } from "./kinopoisk-api";
+import { kinopoiskApi } from "./api";
 import type { Movie } from "../models/movie";
 
 export async function getMovie(id: number): Promise<Movie | undefined> {

@@ -1,6 +1,6 @@
-import type { MovieShort } from "../models/movie";
-import type { Month } from "../models/month";
-import { kinopoiskApi } from "./kinopoisk-api";
+import type { Month } from "../../models/month";
+import type { MovieShort } from "../../models/movie";
+import { kinopoiskApi } from "./api";
 
 export async function getPremieres(
   year: string | number,
