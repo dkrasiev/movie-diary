@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { ACCESS_EXPRIRE_TIME, REFRESH_EXPRIRE_TIME } from "../constants";
 import prismaClient from "../prisma-client";
 
 class TokenService {
@@ -27,11 +28,15 @@ class TokenService {
   }
 
   private generateAccessToken(payload: object) {
-    return jwt.sign(payload, this.accessSecret, { expiresIn: "30m" });
+    return jwt.sign(payload, this.accessSecret, {
+      expiresIn: ACCESS_EXPRIRE_TIME,
+    });
   }
 
   private generateRefreshToken(payload: object) {
-    return jwt.sign(payload, this.refreshSecret, { expiresIn: "30d" });
+    return jwt.sign(payload, this.refreshSecret, {
+      expiresIn: REFRESH_EXPRIRE_TIME,
+    });
   }
 }
 

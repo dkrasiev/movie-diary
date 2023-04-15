@@ -4,10 +4,10 @@ import type { MovieShort } from "../../../models/movie";
 import { getJson, setJson } from "../../../lib/redis-client";
 import {
   badRequestResponse,
-  internalErrorResponse,
   jsonResponse,
-} from "../../../lib/responses";
+} from "../../../lib/httpUtils/responses";
 import { getPremieres } from "../../../lib/kinopoisk-api/get-premieres";
+import defaultHttpErrorHandler from "../../../lib/httpUtils/default-http-error-handler";
 
 export const get: APIRoute = async function get({ request }) {
   try {
@@ -15,7 +15,7 @@ export const get: APIRoute = async function get({ request }) {
     const params = Object.fromEntries(url.searchParams);
     const { year, month } = params;
     if (!year || isMonth(month) === false) {
-      return badRequestResponse();
+      throw badRequestResponse();
     }
 
     const key = `premieres:${year}:${month}`;
@@ -26,10 +26,6 @@ export const get: APIRoute = async function get({ request }) {
     await setJson(key, data);
     return jsonResponse(data);
   } catch (e) {
-    if (e instanceof Response) {
-      return e;
-    }
-
-    return internalErrorResponse();
+    return defaultHttpErrorHandler.handleError(e);
   }
 };

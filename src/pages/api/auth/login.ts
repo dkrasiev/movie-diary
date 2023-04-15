@@ -1,27 +1,24 @@
 import type { APIRoute } from "astro";
+import defaultHttpErrorHandler from "../../../lib/httpUtils/default-http-error-handler";
 import {
   badRequestResponse,
-  internalErrorResponse,
   jsonResponse,
-} from "../../../lib/responses";
+} from "../../../lib/httpUtils/responses";
+import { setRefreshCookie } from "../../../lib/httpUtils/set-refresh-cookie";
 import authService from "../../../lib/services/auth.service";
 
-export const post: APIRoute = async ({ request }) => {
+export const post: APIRoute = async ({ request, cookies }) => {
   try {
     const { email, password } = (await request.json().catch(() => {})) || {};
-
     if (!email || !password) {
-      return badRequestResponse();
+      throw badRequestResponse();
     }
 
-    const result = await authService.login(email, password);
+    const { access, refresh } = await authService.login(email, password);
+    setRefreshCookie(cookies, refresh);
 
-    return jsonResponse(result);
+    return jsonResponse(access);
   } catch (e) {
-    if (e instanceof Response) {
-      return e;
-    }
-
-    return internalErrorResponse();
+    return defaultHttpErrorHandler.handleError(e);
   }
 };

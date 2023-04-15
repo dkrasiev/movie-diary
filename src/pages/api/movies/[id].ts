@@ -6,8 +6,9 @@ import {
   internalErrorResponse,
   jsonResponse,
   notFoundResponse,
-} from "../../../lib/responses";
+} from "../../../lib/httpUtils/responses";
 import { getMovie } from "../../../lib/kinopoisk-api/get-movie";
+import defaultHttpErrorHandler from "../../../lib/httpUtils/default-http-error-handler";
 
 export const get: APIRoute = async function get({ params }) {
   try {
@@ -26,10 +27,6 @@ export const get: APIRoute = async function get({ params }) {
     await setJson(key, data);
     return jsonResponse(data);
   } catch (e) {
-    if (e instanceof Response) {
-      return e;
-    }
-
-    return internalErrorResponse();
+    return defaultHttpErrorHandler.handleError(e);
   }
 };

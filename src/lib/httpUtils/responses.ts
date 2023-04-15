@@ -1,5 +1,5 @@
 // Successful responses
-export const jsonResponse = (body: object) =>
+export const jsonResponse = (body: object | string) =>
   new Response(JSON.stringify(body), {
     headers: {
       "Content-Type": "application/json",

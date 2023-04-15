@@ -2,7 +2,7 @@ import type { User } from "@prisma/client";
 import * as bcrypt from "bcryptjs";
 import { UserDTO } from "../dtos/user-dto";
 import prismaClient from "../prisma-client";
-import { unauthorizedResponse } from "../responses";
+import { unauthorizedResponse } from "../httpUtils/responses";
 import tokenService from "./token.service";
 
 class AuthService {
@@ -30,6 +30,17 @@ class AuthService {
     }
 
     if (bcrypt.compareSync(password, user.password) === false) {
+      throw unauthorizedResponse();
+    }
+
+    return this.generateAndSaveUserTokens(user);
+  }
+
+  public async refresh(token: string) {
+    const user = await prismaClient.token
+      .findUnique({ where: { token } })
+      .user();
+    if (!user) {
       throw unauthorizedResponse();
     }
 
