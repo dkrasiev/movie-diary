@@ -11,7 +11,7 @@ class AuthService {
   public async register(email: string, password: string) {
     const candidate = await this.getUserByEmail(email);
     if (candidate) {
-      return new Response("User already exists");
+      throw new Response("User already exists", { status: 409 });
     }
 
     const hashPassword = bcrypt.hashSync(password, 10);
@@ -26,11 +26,11 @@ class AuthService {
     const user = await prismaClient.user.findUnique({ where: { email } });
 
     if (!user) {
-      return unauthorizedResponse();
+      throw unauthorizedResponse();
     }
 
     if (bcrypt.compareSync(password, user.password) === false) {
-      return unauthorizedResponse();
+      throw unauthorizedResponse();
     }
 
     return this.generateAndSaveUserTokens(user);

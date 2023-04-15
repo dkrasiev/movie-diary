@@ -22,5 +22,5 @@ export const notFoundResponse = () =>
 export const conflictResponse = () => new Response("Conflict", { status: 409 });
 
 // Server error responses
-export const internalErrorResposne = () =>
+export const internalErrorResponse = () =>
   new Response("Internal Error", { status: 500 });
