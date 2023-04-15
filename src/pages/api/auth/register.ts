@@ -11,13 +11,13 @@ export const post: APIRoute = async ({ request, cookies }) => {
   try {
     const { email, password } = (await request.json().catch(() => {})) || {};
     if (!email || !password) {
-      return badRequestResponse();
+      throw badRequestResponse();
     }
 
     const { access, refresh } = await authService.register(email, password);
     setRefreshCookie(cookies, refresh);
 
-    return jsonResponse(access);
+    return jsonResponse({ access });
   } catch (e) {
     return defaultHttpErrorHandler.handleError(e);
   }

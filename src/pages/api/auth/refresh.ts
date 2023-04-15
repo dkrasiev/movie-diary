@@ -18,7 +18,7 @@ export const post: APIRoute = async ({ cookies }) => {
     const { access, refresh } = await authService.refresh(refreshToken);
     setRefreshCookie(cookies, refresh);
 
-    return jsonResponse(access);
+    return jsonResponse({ access });
   } catch (e) {
     return defaultHttpErrorHandler.handleError(e);
   }
