@@ -11,17 +11,35 @@ datasource db {
 }
 
 model User {
-  id             String  @id @default(uuid())
-  email          String  @unique
-  password       String
+  id       String @id @default(uuid())
+  email    String @unique
+  password String
+
   activated      Boolean @default(false)
   activationLink String?
-  token          Token[]
+
+  role   Role   @relation(fields: [roleId], references: [id])
+  roleId String @default("0")
+
+  token Token?
+}
+
+model Role {
+  id     String  @id
+  name   String  @unique
+  rights Right[]
+  users  User[]
+}
+
+model Right {
+  id   String @id
+  name String
+
+  roles Role[]
 }
 
 model Token {
-  id     String @id @default(uuid())
-  token  String
+  token  String @id
   userId String @unique
   user   User   @relation(fields: [userId], references: [id])
 }
