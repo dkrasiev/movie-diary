@@ -2,31 +2,26 @@
 	import MovieCard from '../MovieCard.svelte';
 	import { fetchPremieres } from '$lib/client/fetch-premieres';
 	import { Month, getMonthById } from '$lib/models/month';
-	import type { MovieShort } from '$lib/models/movie';
 
 	let year: number = new Date().getFullYear();
 	let month: Month = getMonthById(new Date().getMonth()) || Month.JANUARY;
 
-	let premieres: Promise<MovieShort[]> = new Promise<MovieShort[]>((resolve) => resolve([]));
-
-	function search() {
-		premieres = fetchPremieres(year, month);
-	}
+	$: premieres = fetchPremieres(year, month);
 </script>
 
-<form>
+<div>
 	<input type="number" bind:value={year} />
 	<select bind:value={month}>
 		{#each Object.values(Month) as month}
 			<option value={month}>{month}</option>
 		{/each}
 	</select>
-	<button on:click|preventDefault={search}>Fetch</button>
-</form>
+</div>
 
 {#await premieres}
 	<h1>Loading...</h1>
 {:then movies}
+	<h1>Premieres</h1>
 	<div class="grid gap-4">
 		{#each movies as movie (movie.kinopoiskId)}
 			<MovieCard {movie} />
