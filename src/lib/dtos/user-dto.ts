@@ -1,13 +1,17 @@
-import type { User } from "@prisma/client";
+import type { User } from '@prisma/client';
 
-export class UserDTO {
-  id;
-  email;
-  activated;
+export interface UserDTO {
+	id: string;
+	email: string;
+	activated: boolean;
+}
 
-  constructor(user: User) {
-    this.id = user.id;
-    this.email = user.email;
-    this.activated = user.activated;
-  }
+export function getUserDto(user: User): UserDTO {
+	const { id, email, activated } = user;
+
+	return {
+		id,
+		email,
+		activated
+	};
 }

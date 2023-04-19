@@ -1,0 +1,77 @@
+import type { User } from '@prisma/client';
+import * as bcrypt from 'bcryptjs';
+import { getUserDto } from '../../dtos/user-dto';
+import prismaClient from '../prisma-client';
+import { conflictResponse, unauthorizedResponse } from '../httpUtils/responses';
+import tokenService from './token.service';
+
+class AuthService {
+	public async register(email: string, password: string) {
+		const candidate = await this.getUserByEmail(email);
+		if (candidate) {
+			throw conflictResponse('User already exists');
+		}
+
+		const user = await this.createUser(email, password);
+
+		return this.generateAndSaveUserTokens(user);
+	}
+
+	public async login(email: string, password: string) {
+		const user = await this.getUserByEmail(email);
+		if (!user || (await this.validateUserByPassword(user, password)) === false) {
+			throw unauthorizedResponse();
+		}
+
+		return this.generateAndSaveUserTokens(user);
+	}
+
+	public async refresh(token: string) {
+		const user = await this.getUserByToken(token);
+		if (!user || (await this.validateUserByToken(user, token)) === false) {
+			throw unauthorizedResponse();
+		}
+
+		return this.generateAndSaveUserTokens(user);
+	}
+
+	private async generateAndSaveUserTokens(user: User) {
+		const userDto = getUserDto(user);
+		const token = tokenService.generateUserToken({ ...userDto });
+		await tokenService.saveUserToken(user.id, token);
+
+		return { token, user: userDto };
+	}
+
+	private async createUser(email: string, password: string): Promise<User> {
+		return prismaClient.user.create({
+			data: { email, password: bcrypt.hashSync(password, 10) }
+		});
+	}
+
+	private async getUserByEmail(email: string): Promise<User | null> {
+		return prismaClient.user.findUnique({ where: { email } });
+	}
+
+	private async getUserByToken(token: string): Promise<User | null> {
+		return prismaClient.token.findUnique({ where: { token } }).user();
+	}
+
+	private async validateUserByPassword(user: User, password: string): Promise<boolean> {
+		return bcrypt.compare(password, user.password);
+	}
+
+	private async validateUserByToken(user: User, token: string): Promise<boolean> {
+		const userToken = await prismaClient.token
+			.findUnique({
+				where: { userId: user.id }
+			})
+			.then((token) => token?.token);
+
+		return (
+			typeof userToken === 'string' && userToken === token && tokenService.verifyUserToken(token)
+		);
+	}
+}
+
+export default new AuthService();

@@ -1,0 +1,27 @@
+{
+	"/": [
+		"src/routes/+layout.server.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/api/movies/premieres": [
+		"src/routes/api/movies/premieres/+server.ts"
+	],
+	"/api/movies/[movieId]": [
+		"src/routes/api/movies/[movieId]/+server.ts"
+	],
+	"/auth": [
+		"src/routes/auth/+page.server.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/movies": [
+		"src/routes/movies/+page.server.ts",
+		"src/routes/+layout.server.ts"
+	],
+	"/movies/premieres": [
+		"src/routes/+layout.server.ts"
+	],
+	"/movies/[id]": [
+		"src/routes/movies/[id]/+page.server.ts",
+		"src/routes/+layout.server.ts"
+	]
+}
