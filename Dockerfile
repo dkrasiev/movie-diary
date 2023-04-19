@@ -1,10 +1,13 @@
-FROM node:latest
+FROM node:18-alpine
 
 WORKDIR /app
 
-COPY package.json package.json
+COPY package*.json ./
+RUN npm ci
+
+COPY .env .env
 COPY prisma prisma
-RUN npm install
+RUN npx prisma generate
 
 COPY . .
 RUN npm run build
