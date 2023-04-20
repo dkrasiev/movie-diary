@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import type { UserDTO } from '$lib/dtos/user-dto';
 
-	export let user: UserDTO | undefined;
+	export let username: string | undefined;
 
 	interface Route {
 		name: string;
@@ -48,7 +47,7 @@
 
 	<div class="corner">
 		<div class="absolute right-0 p-2">
-			{user?.email}
+			{username}
 		</div>
 	</div>
 </header>

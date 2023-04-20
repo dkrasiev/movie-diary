@@ -8,9 +8,9 @@
 </script>
 
 <div class="min-h-screen flex flex-col">
-	<Header user={data.user} />
+	<Header username={data.user?.email} />
 
-	<main class="container mx-auto flex-1 py-4">
+	<main class="container mx-auto flex-1 p-4">
 		<slot />
 	</main>
 

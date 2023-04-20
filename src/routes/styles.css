@@ -91,7 +91,7 @@ button {
 input,
 select,
 button {
-	@apply p-1 border rounded bg-white;
+	@apply p-1 border rounded bg-white h-8 align-middle;
 }
 
 button:focus:not(:focus-visible) {
