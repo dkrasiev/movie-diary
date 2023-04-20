@@ -13,10 +13,10 @@ export const actions = {
 			return fail(400, { missing: true });
 		}
 
-		const result = await authService.login(email, password);
-		setTokenCookie(cookies, result.token);
+		const { user, token } = await authService.login(email, password);
+		setTokenCookie(cookies, token);
 
-		return result;
+		return { user };
 	},
 
 	register: async ({ request, cookies }) => {
@@ -28,9 +28,9 @@ export const actions = {
 			return fail(400, { missing: true });
 		}
 
-		const result = await authService.register(email, password);
-		setTokenCookie(cookies, result.token);
+		const { user, token } = await authService.register(email, password);
+		setTokenCookie(cookies, token);
 
-		return result;
+		return { user };
 	}
 } satisfies Actions;
