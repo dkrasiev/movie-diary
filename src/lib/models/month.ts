@@ -13,9 +13,9 @@ export enum Month {
 	DECEMBER = 'DECEMBER'
 }
 
-export function isMonth(value?: string): value is Month {
+export function isMonth(value?: unknown): value is Month {
 	if (!value) return false;
-	return Object.keys(Month).includes(value) === true;
+	return Object.keys(Month).some((month) => month === value);
 }
 
 export function getMonthById(id: number): Month | undefined {

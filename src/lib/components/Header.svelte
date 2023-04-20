@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-
-	export let username: string | undefined;
+	import type { UserDTO } from '$lib/dtos/user-dto';
 
 	interface Route {
 		name: string;
@@ -9,11 +8,16 @@
 		exact?: boolean;
 	}
 
+	export let user: UserDTO | undefined;
+
 	const routes: Route[] = [
 		{ name: 'Home', path: '/', exact: true },
-		{ name: 'Movies', path: '/movies' },
-		{ name: 'Auth', path: '/auth' }
+		{ name: 'Movies', path: '/movies' }
 	];
+
+	if (!user) {
+		routes.push({ name: 'Auth', path: '/auth' });
+	}
 
 	$: checkRoute = (route: Route) => {
 		const path = $page.url.pathname;
@@ -27,7 +31,11 @@
 </script>
 
 <header>
-	<div class="corner" />
+	<div class="corner">
+		{#if user?.activated === false}
+			<div class="absolute left-0 p-2 flex align-middle">Your account is not activated</div>
+		{/if}
+	</div>
 
 	<nav>
 		<svg viewBox="0 0 2 3" aria-hidden="true">
@@ -45,10 +53,12 @@
 		</svg>
 	</nav>
 
-	<div class="corner">
-		<div class="absolute right-0 p-2">
-			{username}
-		</div>
+	<div class="corner cursor-pointer">
+		{#if user}
+			<form class="absolute right-0 p-2 flex align-middle" action="/auth?/logout" method="post">
+				<button class="bg-transparent border-none">Log out</button>
+			</form>
+		{/if}
 	</div>
 </header>
 

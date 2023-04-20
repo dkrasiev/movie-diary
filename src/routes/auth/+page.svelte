@@ -2,32 +2,24 @@
 	import type { ActionData } from './$types';
 
 	export let form: ActionData;
-
-	let authFormElement: HTMLFormElement;
-	let action: string = '?/login';
-
-	function send(action: '?/login' | '?/register') {
-		authFormElement.action = action;
-		authFormElement.submit();
-	}
 </script>
 
-<form class="flex flex-col" {action} method="post" bind:this={authFormElement}>
-	<input name="email" type="email" required />
-	<input name="password" type="password" required />
+<form class="flex flex-col max-w-md mx-auto" method="post">
+	<label for="email">Email</label>
+	<input id="email" name="email" type="email" required />
+
+	<label for="password">Password</label>
+	<input id="password" name="password" type="password" required />
+
 	<div class="flex justify-content">
-		<button on:click|preventDefault={() => send('?/login')}>Log In</button>
+		<button formaction="?/login">Log In</button>
 		<div class="w-2" />
-		<button on:click|preventDefault={() => send('?/register')}>Register</button>
+		<button formaction="?/register">Register</button>
 	</div>
 </form>
 
 {#if form?.error}
-	<h1 class="text-red-500">{form.error.status}: {form.error.data}</h1>
-{/if}
-
-{#if form?.result}
-	<h1 class="text-green-500">Success</h1>
+	<p class="text-red-500 text-center">{form.error.status}: {form.error.data}</p>
 {/if}
 
 <style>

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import MovieCard from '../MovieCard.svelte';
 	import { fetchPremieres } from '$lib/client/fetch-premieres';
+	import MovieCard from '$lib/components/MovieCard.svelte';
 	import { Month, getMonthById } from '$lib/models/month';
 
 	let year: number = new Date().getFullYear();
@@ -10,8 +10,8 @@
 </script>
 
 <div>
-	<input type="number" bind:value={year} />
-	<select bind:value={month}>
+	<input name="year" type="number" bind:value={year} />
+	<select name="month" bind:value={month}>
 		{#each Object.values(Month) as month}
 			<option value={month}>{month}</option>
 		{/each}
@@ -21,12 +21,16 @@
 {#await premieres}
 	<h1>Loading...</h1>
 {:then movies}
-	<h1>Premieres</h1>
-	<div class="grid gap-4">
-		{#each movies as movie (movie.kinopoiskId)}
-			<MovieCard {movie} />
-		{/each}
-	</div>
+	{#if movies?.length}
+		<h1>Premieres</h1>
+		<div class="grid gap-4">
+			{#each movies as movie (movie.kinopoiskId)}
+				<MovieCard {movie} />
+			{/each}
+		</div>
+	{:else}
+		<h1>Premieres not found</h1>
+	{/if}
 {:catch}
 	<h1>Error</h1>
 {/await}

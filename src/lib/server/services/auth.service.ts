@@ -35,6 +35,10 @@ class AuthService {
 		return this.generateAndSaveUserTokens(user);
 	}
 
+	public async logout(token: string) {
+		return prismaClient.token.delete({ where: { token } });
+	}
+
 	private async generateAndSaveUserTokens(user: User) {
 		const userDto = getUserDto(user);
 		const token = tokenService.generateUserToken({ ...userDto });
