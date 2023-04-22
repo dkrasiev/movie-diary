@@ -1,9 +1,9 @@
 import type { User } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
-import { getUserDto } from '../../dtos/user-dto';
 import prismaClient from '../prisma-client';
-import { conflictResponse, unauthorizedResponse } from '../httpUtils/responses';
+import { conflictResponse, unauthorizedResponse } from '../http-utils/responses';
 import tokenService from './token.service';
+import { convertUserToDTO } from '@movie-diary/core';
 
 class AuthService {
 	public async register(email: string, password: string) {
@@ -40,7 +40,7 @@ class AuthService {
 	}
 
 	private async generateAndSaveUserTokens(user: User) {
-		const userDto = getUserDto(user);
+		const userDto = convertUserToDTO(user);
 		const token = tokenService.generateUserToken({ ...userDto });
 		await tokenService.saveUserToken(user.id, token);
 

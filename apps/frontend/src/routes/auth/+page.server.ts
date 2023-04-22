@@ -1,8 +1,8 @@
-import { setTokenCookie } from '$lib/server/httpUtils/set-token-cookie.js';
+import { setTokenCookie } from '$lib/server/http-utils/set-token-cookie.js';
 import authService from '$lib/server/services/auth.service.js';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types.js';
-import { HttpError } from '$lib/server/httpUtils/http-error.js';
+import { HttpError } from '$lib/server/http-utils/http-error.js';
 import { USER_TOKEN_KEY } from '$lib/server/constants.js';
 
 async function getUserCredsFromRequest(

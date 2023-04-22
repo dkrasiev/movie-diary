@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { MovieShort } from '$lib/models/movie';
+	import type { MovieShort } from '@movie-diary/core';
 
 	export let movie: MovieShort;
 

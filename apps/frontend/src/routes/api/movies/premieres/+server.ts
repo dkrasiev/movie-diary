@@ -1,5 +1,5 @@
-import { getMonthById, isMonth } from '$lib/models/month';
 import kinopoiskApiService from '$lib/server/services/kinopoisk-api.service';
+import { getMonthById, isMonth } from '@movie-diary/core';
 import { error, json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 

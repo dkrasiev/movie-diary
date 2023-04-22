@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Movie } from '$lib/models/movie';
+	import type { Movie } from '@movie-diary/core';
 	import type { PageServerData } from './$types';
 
 	export let data: PageServerData;

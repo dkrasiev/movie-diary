@@ -1,12 +1,21 @@
 import { KINOPOISK_API_TOKEN } from '$env/static/private';
-import type { Month } from '$lib/models/month';
-import type { Movie, MovieShort } from '$lib/models/movie';
+import type { Month, Movie, MovieShort } from '@movie-diary/core';
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
-import RedisCache from '../redis/cache';
+import { RedisCache } from '../redis-cache';
 
 export class KinopoiskApiService {
-	constructor(private api: AxiosInstance) {}
+	private api: AxiosInstance;
+
+	constructor(token: string) {
+		this.api = axios.create({
+			baseURL: 'https://kinopoiskapiunofficial.tech',
+			headers: {
+				'X-API-KEY': token,
+				'Content-Type': 'application/json'
+			}
+		});
+	}
 
 	@RedisCache({
 		prefix: 'movie'
@@ -34,12 +43,4 @@ export class KinopoiskApiService {
 	}
 }
 
-const kinopoiskApi = axios.create({
-	baseURL: 'https://kinopoiskapiunofficial.tech',
-	headers: {
-		'X-API-KEY': KINOPOISK_API_TOKEN,
-		'Content-Type': 'application/json'
-	}
-});
-
-export default new KinopoiskApiService(kinopoiskApi);
+export default new KinopoiskApiService(KINOPOISK_API_TOKEN);

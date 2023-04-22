@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import type { UserDTO } from '$lib/dtos/user-dto';
+	import type { UserDTO } from '@movie-diary/core';
 
 	interface Route {
 		name: string;

@@ -19,3 +19,7 @@ export interface MovieShort {
   duration: number;
   premiereRu: string;
 }
+
+export function isMovieShort(obj: any): obj is MovieShort {
+  return typeof obj === "object" && typeof obj.kinopoiskId === "number";
+}

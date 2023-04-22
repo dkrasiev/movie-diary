@@ -1,5 +1,5 @@
 import { USER_TOKEN_KEY } from '$lib/server/constants';
-import { setTokenCookie } from '$lib/server/httpUtils/set-token-cookie';
+import { setTokenCookie } from '$lib/server/http-utils/set-token-cookie';
 import authService from '$lib/server/services/auth.service';
 import type { Handle } from '@sveltejs/kit';
 

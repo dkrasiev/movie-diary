@@ -1,5 +1,5 @@
 {
-  "name": "database",
+  "name": "@movie-diary/database",
   "scripts": {
     "db:generate": "prisma generate",
     "db:push": "prisma db push --skip-generate"
