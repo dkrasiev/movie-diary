@@ -18,15 +18,17 @@ model User {
   activated      Boolean @default(false)
   activationLink String?
 
-  role   Role   @relation(fields: [roleId], references: [id])
   roleId String @default("0")
+  role   Role   @relation(fields: [roleId], references: [id])
 
-  token Token?
+  token         Token?
+  subscriptions Subscription[]
 }
 
 model Role {
-  id     String  @id
-  name   String  @unique
+  id   String @id
+  name String @unique
+
   rights Right[]
   users  User[]
 }
@@ -42,4 +44,13 @@ model Token {
   token  String @id
   userId String @unique
   user   User   @relation(fields: [userId], references: [id])
+}
+
+model Subscription {
+  id String @id @default(uuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  kinopoiskId Int
 }

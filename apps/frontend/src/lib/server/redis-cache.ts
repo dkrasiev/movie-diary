@@ -1,4 +1,4 @@
 import { RedisCacheFactory } from '@movie-diary/core';
-import client from './redis-client';
+import redisClient from './redis-client';
 
-export const RedisCache = RedisCacheFactory(client);
+export const RedisCache = RedisCacheFactory(redisClient);
