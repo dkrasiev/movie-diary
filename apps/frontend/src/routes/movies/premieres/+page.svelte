@@ -2,7 +2,7 @@
 	import { fetchPremieres } from '$lib/client/fetch-premieres';
 	import MovieCard from '$lib/components/MovieCard.svelte';
 	import MovieGrid from '$lib/components/MovieGrid.svelte';
-	import { Month, getMonthById } from '@movie-diary/core';
+	import { Month, getMonthById } from '@dkrasiev/movie-diary';
 
 	let year: number = new Date().getFullYear();
 	let month: Month = getMonthById(new Date().getMonth()) || Month.JANUARY;

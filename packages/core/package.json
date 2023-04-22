@@ -1,5 +1,6 @@
 {
-  "name": "@movie-diary/core",
+  "name": "@dkrasiev/movie-diary-core",
+  "version": "0.0.1",
   "main": "src/index.ts",
   "types": "src/index.ts",
   "type": "module",

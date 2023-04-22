@@ -1,4 +1,4 @@
-import { MovieShort, PremierUpdateDTO } from "@movie-diary/core";
+import { MovieShort, PremierUpdateDTO } from "@dkrasiev/movie-diary";
 import amqp from "amqplib";
 import mailService from "./services/mail.service.js";
 

@@ -1,5 +1,5 @@
 import { KINOPOISK_API_TOKEN } from '$env/static/private';
-import type { Month, Movie, MovieShort } from '@movie-diary/core';
+import type { Month, Movie, MovieShort } from '@dkrasiev/movie-diary';
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
 import { RedisCache } from '../redis-cache';

@@ -1,5 +1,7 @@
 {
-  "name": "@movie-diary/database",
+  "name": "database",
+  "main": "./index.ts",
+  "types": "./index.ts",
   "scripts": {
     "db:generate": "prisma generate",
     "db:push": "prisma db push --skip-generate"
@@ -8,6 +10,6 @@
     "@prisma/client": "latest"
   },
   "devDependencies": {
-    "prisma": "latest"
+    "prisma": "^4.13.0"
   }
 }

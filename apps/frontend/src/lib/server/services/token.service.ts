@@ -1,9 +1,9 @@
 import { USER_TOKEN_SECRET } from '$env/static/private';
-import type { Token } from '@prisma/client';
+import type { Token } from 'database';
 import jwt from 'jsonwebtoken';
-import { USER_TOKEN_EXPIRE_TIME } from '../constants';
-import prismaClient from '../prisma-client';
-import type { UserDTO } from '@movie-diary/core';
+import type { UserDTO } from '@dkrasiev/movie-diary';
+import prismaClient from '../prisma-client.js';
+import { USER_TOKEN_EXPIRE_TIME } from '../constants.js';
 
 class TokenService {
 	constructor(private refreshSecret: string) {}

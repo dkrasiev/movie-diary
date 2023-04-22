@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { MovieShort } from '@movie-diary/core';
+	import type { MovieShort } from '@dkrasiev/movie-diary';
 
 	export let movie: MovieShort;
 

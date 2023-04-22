@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import type { UserDTO } from '@movie-diary/core';
+	import type { UserDTO } from '@dkrasiev/movie-diary';
 
 	interface Route {
 		name: string;

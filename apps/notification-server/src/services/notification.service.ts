@@ -1,10 +1,10 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "database";
 import {
   MovieShort,
   PremierUpdateDTO,
   UserDTO,
   convertUserToDTO,
-} from "@movie-diary/core";
+} from "@dkrasiev/movie-diary";
 import { Channel } from "amqplib";
 import { EXCHANGE, channel } from "../lib/amqp.js";
 

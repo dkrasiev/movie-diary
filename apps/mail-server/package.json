@@ -16,7 +16,7 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@movie-diary/core": "*",
+    "@dkrasiev/movie-diary": "*",
     "amqplib": "^0.10.3",
     "dotenv": "^16.0.3",
     "nodemailer": "^6.9.1"

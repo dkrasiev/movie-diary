@@ -1,9 +1,9 @@
-import type { User } from '@prisma/client';
+import type { User } from 'database';
 import * as bcrypt from 'bcryptjs';
 import prismaClient from '../prisma-client';
 import { conflictResponse, unauthorizedResponse } from '../http-utils/responses';
 import tokenService from './token.service';
-import { convertUserToDTO } from '@movie-diary/core';
+import { convertUserToDTO } from '@dkrasiev/movie-diary';
 
 class AuthService {
 	public async register(email: string, password: string) {

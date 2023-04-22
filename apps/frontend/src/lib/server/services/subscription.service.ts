@@ -1,4 +1,4 @@
-import type { PrismaClient, Subscription } from '@prisma/client';
+import type { PrismaClient, Subscription } from 'database';
 import prismaClient from '../prisma-client';
 
 export class SubscriptionService {

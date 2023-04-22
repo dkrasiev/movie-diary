@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from 'database';
 
 const prismaClient = new PrismaClient();
 await prismaClient.$connect();

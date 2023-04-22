@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Movie } from '@movie-diary/core';
+	import type { Movie } from '@dkrasiev/movie-diary';
 	import type { PageServerData, ActionData } from './$types';
 
 	export let data: PageServerData;
