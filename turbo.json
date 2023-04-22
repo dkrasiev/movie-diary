@@ -1,0 +1,31 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": [
+    "**/.env.*local"
+  ],
+  "pipeline": {
+    "db:generate": {
+      "cache": false
+    },
+    "db:push": {
+      "cache": false
+    },
+    "build": {
+      "dependsOn": [
+        "^db:generate"
+      ],
+      "outputs": [
+        ".svelte-kit/**",
+        "dist/**"
+      ]
+    },
+    "lint": {},
+    "dev": {
+      "dependsOn": [
+        "^db:generate"
+      ],
+      "cache": false,
+      "persistent": true
+    }
+  }
+}
