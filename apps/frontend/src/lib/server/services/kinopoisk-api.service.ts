@@ -3,7 +3,7 @@ import type { Month } from '$lib/models/month';
 import type { Movie, MovieShort } from '$lib/models/movie';
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
-import { RedisCache } from '../redis/cache';
+import RedisCache from '../redis/cache';
 
 export class KinopoiskApiService {
 	constructor(private api: AxiosInstance) {}

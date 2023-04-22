@@ -1,11 +1,11 @@
 import { REDIS_URL } from '$env/static/private';
-import { Client } from 'redis-om';
+import Redis from 'ioredis';
 
-const client = await new Client().open(REDIS_URL);
+const client = new Redis(REDIS_URL);
 
 export async function getJson<T>(key: string): Promise<T | undefined> {
 	try {
-		return client.jsonget(key) as T;
+		return client.call('JSON.GET', key) as T;
 	} catch (e) {
 		console.error(e);
 		return undefined;
@@ -13,7 +13,7 @@ export async function getJson<T>(key: string): Promise<T | undefined> {
 }
 
 export async function setJson<T extends object>(key: string, value: T): Promise<void> {
-	await client.jsonset(key, value);
+	await client.call('JSON.SET', key, JSON.stringify(value));
 }
 
 export default client;

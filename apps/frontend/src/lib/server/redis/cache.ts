@@ -1,5 +1,6 @@
 import type { RequireAtLeastOne } from '$lib/misc/require-at-lease-one';
-import { getJson, setJson } from './client';
+import type Redis from 'ioredis';
+import client from './client';
 
 type RedisCacheOptions<Args extends unknown[]> = RequireAtLeastOne<
 	{
@@ -10,30 +11,55 @@ type RedisCacheOptions<Args extends unknown[]> = RequireAtLeastOne<
 	'prefix' | 'keyFn'
 >;
 
-export function RedisCache<This, Args extends unknown[], Return>({
-	keyFn,
-	prefix,
-	delimiter
-}: RedisCacheOptions<Args>) {
-	return function (
-		target: (this: This, ...args: Args) => Promise<Return>,
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		context: ClassMethodDecoratorContext<This, (this: This, ...args: Args) => Promise<Return>>
-	) {
-		return async function (this: This, ...args: Args): Promise<Return> {
-			const key = keyFn ? keyFn(...args) : [prefix, ...args].join(delimiter || ':');
+/**
+ * Returns RedisCache decorator
+ * @param redis Redis client
+ * @param debug Enable log to console
+ * @returns
+ */
+export function RedisCacheFactory(redis: Redis, debug = false) {
+	return function RedisCache<Args extends unknown[], Return>(options: RedisCacheOptions<Args>) {
+		const { prefix, keyFn, delimiter } = options;
 
-			const cache = await getJson<Return>(key);
-			if (cache) {
-				return cache;
+		return function (
+			target: unknown,
+			key: string,
+			descriptor: TypedPropertyDescriptor<(...args: Args) => Promise<Return>>
+		) {
+			function log(...args: unknown[]) {
+				if (debug) {
+					console.log('REDIS CACHE:', ...args);
+				}
 			}
+			const originalMethod = descriptor.value;
 
-			const result = target.call(this, ...args);
-			if (result) {
-				await setJson(key, result);
+			if (typeof originalMethod === 'function') {
+				descriptor.value = async function (...args: Args) {
+					const key = keyFn ? keyFn(...args) : [prefix, ...args].join(delimiter || ':');
+					log('args:', args);
+					log('key:', key);
+
+					const redisData = await redis.call('JSON.GET', key, '$');
+					if (typeof redisData === 'string') {
+						const cache = JSON.parse(redisData)[0] as Return;
+						if (cache) {
+							log('cache hit');
+							return cache;
+						}
+					}
+
+					log('cache miss');
+					const result = await originalMethod.call(this, ...args);
+					if (result) {
+						log('caching');
+						await redis.call('JSON.SET', key, '$', JSON.stringify(result));
+					}
+
+					return result;
+				};
 			}
-
-			return result;
 		};
 	};
 }
+
+export default RedisCacheFactory(client);
