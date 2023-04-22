@@ -15,6 +15,10 @@
 		{ name: 'Movies', path: '/movies' }
 	];
 
+	if (user) {
+		routes.push({ name: 'Subscriptions', path: '/subscriptions' });
+	}
+
 	if (!user) {
 		routes.push({ name: 'Auth', path: '/auth' });
 	}

@@ -10,8 +10,6 @@
 
 <h1>{name}</h1>
 
-{movie?.premiereRu}
-
 <!-- {#if } -->
 <form method="post">
 	<button>{!data.subscription ? 'subscribe' : 'unsubscribe'}</button>

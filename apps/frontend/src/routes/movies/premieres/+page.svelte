@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { fetchPremieres } from '$lib/client/fetch-premieres';
 	import MovieCard from '$lib/components/MovieCard.svelte';
+	import MovieGrid from '$lib/components/MovieGrid.svelte';
 	import { Month, getMonthById } from '@movie-diary/core';
 
 	let year: number = new Date().getFullYear();
@@ -23,11 +24,7 @@
 {:then movies}
 	{#if movies?.length}
 		<h1>Premieres</h1>
-		<div class="grid gap-4">
-			{#each movies as movie (movie.kinopoiskId)}
-				<MovieCard {movie} />
-			{/each}
-		</div>
+		<MovieGrid {movies} />
 	{:else}
 		<h1>Premieres not found</h1>
 	{/if}
@@ -36,7 +33,4 @@
 {/await}
 
 <style>
-	div {
-		grid-template-columns: repeat(auto-fill, minmax(16rem, auto));
-	}
 </style>
