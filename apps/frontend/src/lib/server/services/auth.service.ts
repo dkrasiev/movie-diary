@@ -1,7 +1,7 @@
 import type { User } from '@prisma/client';
-import * as bcrypt from 'bcryptjs';
+import bcrypt from 'bcryptjs';
 import tokenService from './token.service';
-import { convertUserToDTO } from '@dkrasiev/movie-diary';
+import { convertUserToDTO } from '@dkrasiev/movie-diary-core';
 import { conflictResponse, unauthorizedResponse } from '../http-utils/responses';
 import { prisma } from '../prisma';
 
@@ -49,7 +49,7 @@ class AuthService {
 
 	private async createUser(email: string, password: string): Promise<User> {
 		return prisma.user.create({
-			data: { email, password: bcrypt.hashSync(password, 10) }
+			data: { email, password: await bcrypt.hash(password, 10) }
 		});
 	}
 
