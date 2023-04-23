@@ -3,7 +3,7 @@ import type { UserDTO } from '@dkrasiev/movie-diary-core';
 import type { Token } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 import { USER_TOKEN_EXPIRE_TIME } from '../constants.js';
-import { prisma } from '../prisma.js';
+import prisma from '../prisma.js';
 
 class TokenService {
 	constructor(private refreshSecret: string) {}

@@ -1,4 +1,4 @@
-import { prisma } from '$lib/server/prisma';
+import prisma from '$lib/server/prisma';
 import kinopoiskApiService from '$lib/server/services/kinopoisk-api.service';
 import subscriptionService from '$lib/server/services/subscription.service';
 import { error } from '@sveltejs/kit';

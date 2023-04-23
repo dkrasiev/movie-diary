@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import tokenService from './token.service';
 import { convertUserToDTO } from '@dkrasiev/movie-diary-core';
 import { conflictResponse, unauthorizedResponse } from '../http-utils/responses';
-import { prisma } from '../prisma';
+import prisma from '../prisma';
 
 class AuthService {
 	public async register(email: string, password: string) {

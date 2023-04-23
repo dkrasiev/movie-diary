@@ -1,5 +1,5 @@
 import type { PrismaClient, Subscription } from '@prisma/client';
-import { prisma } from '../prisma';
+import prisma from '../prisma';
 
 export class SubscriptionService {
 	constructor(private prisma: PrismaClient) {}
