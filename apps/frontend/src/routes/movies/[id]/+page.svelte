@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Movie } from '@dkrasiev/movie-diary';
-	import type { PageServerData, ActionData } from './$types';
+	import type { PageServerData } from './$types';
+	import { page } from '$app/stores';
 
 	export let data: PageServerData;
 
@@ -9,15 +10,29 @@
 </script>
 
 <h1>{name}</h1>
+{#if data.diff && data.diff > 0}
+	<h1>До релиза {data.diff} дней</h1>
+{:else if data.diff}
+	<h1>Вышел</h1>
+{/if}
 
-<!-- {#if } -->
-<form method="post">
-	<button>{!data.subscription ? 'subscribe' : 'unsubscribe'}</button>
-</form>
+{#if data.premiereRu && $page.data.user}
+	<form action="?/subscribe" method="post">
+		{#if data.subscription}
+			<button formaction="?/unsubscribe">unsubscribe</button>
+		{:else if data.diff > 0}
+			<button formaction="?/subscribe">subscribe</button>
+		{/if}
+	</form>
+{/if}
 
 <br />
 
-<pre>{JSON.stringify(data.subscription, undefined, 2)}</pre>
+<pre>{JSON.stringify(
+		{ sub: data.subscription, premiereDateRu: data.premiereRu },
+		undefined,
+		2
+	)}</pre>
 
 <br />
 

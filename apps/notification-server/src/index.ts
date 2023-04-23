@@ -1,12 +1,34 @@
-import notificationService from "./services/notification.service.js";
+import amqplib from "amqplib";
+import * as cron from "node-cron";
+import { PrismaClient } from "@prisma/client";
+import { NotificationService } from "./services/notification.service.js";
 
-// TODO: cron выржение, проверяющее обновлений фильмов и отправляющее сообщение в обменник (ориентировочно раз в сутки)
+const EXCHANGE = "subscription_updates";
 
-const updates = await notificationService.checkUpdates();
+amqplib
+  .connect("amqp://localhost")
+  .then((connection) => connection.createChannel())
+  .then(async (channel) => {
+    const prisma = new PrismaClient();
+    await prisma.$connect();
 
-for (const [user, movie] of updates.entries()) {
-  console.log(user.email);
-  console.log(movie.nameRu);
+    const notificationService = new NotificationService(channel, EXCHANGE);
 
-  notificationService.publish({ email: user.email, movie });
-}
+    async function check() {
+      console.log("checking");
+      const updates = await notificationService.checkUpdates();
+
+      for (const { userId, kinopoiskId } of updates) {
+        console.log("send for user", userId, "and movie", kinopoiskId);
+        notificationService.publish({ userId, kinopoiskId });
+        await prisma.subscription.deleteMany({
+          where: { userId, kinopoiskId },
+        });
+      }
+    }
+
+    check();
+
+    // раз в сутки, в 12 часов
+    cron.schedule("0 12 * * *", check);
+  });

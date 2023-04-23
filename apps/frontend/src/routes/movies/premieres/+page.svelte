@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { fetchPremieres } from '$lib/client/fetch-premieres';
-	import MovieCard from '$lib/components/MovieCard.svelte';
 	import MovieGrid from '$lib/components/MovieGrid.svelte';
 	import { Month, getMonthById } from '@dkrasiev/movie-diary';
 

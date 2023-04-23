@@ -1,9 +1,9 @@
-import type { User } from 'database';
+import type { User } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
-import prismaClient from '../prisma-client';
-import { conflictResponse, unauthorizedResponse } from '../http-utils/responses';
 import tokenService from './token.service';
 import { convertUserToDTO } from '@dkrasiev/movie-diary';
+import { conflictResponse, unauthorizedResponse } from '../http-utils/responses';
+import { prisma } from '../prisma';
 
 class AuthService {
 	public async register(email: string, password: string) {
@@ -36,7 +36,7 @@ class AuthService {
 	}
 
 	public async logout(token: string) {
-		return prismaClient.token.delete({ where: { token } });
+		return prisma.token.delete({ where: { token } });
 	}
 
 	private async generateAndSaveUserTokens(user: User) {
@@ -48,17 +48,17 @@ class AuthService {
 	}
 
 	private async createUser(email: string, password: string): Promise<User> {
-		return prismaClient.user.create({
+		return prisma.user.create({
 			data: { email, password: bcrypt.hashSync(password, 10) }
 		});
 	}
 
 	private async getUserByEmail(email: string): Promise<User | null> {
-		return prismaClient.user.findUnique({ where: { email } });
+		return prisma.user.findUnique({ where: { email } });
 	}
 
 	private async getUserByToken(token: string): Promise<User | null> {
-		return prismaClient.token.findUnique({ where: { token } }).user();
+		return prisma.token.findUnique({ where: { token } }).user();
 	}
 
 	private async validateUserByPassword(user: User, password: string): Promise<boolean> {
@@ -66,7 +66,7 @@ class AuthService {
 	}
 
 	private async validateUserByToken(user: User, token: string): Promise<boolean> {
-		const userToken = await prismaClient.token
+		const userToken = await prisma.token
 			.findUnique({
 				where: { userId: user.id }
 			})

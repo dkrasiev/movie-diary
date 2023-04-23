@@ -1,7 +1,7 @@
 <script lang="ts">
-	import type { MovieShort } from '@dkrasiev/movie-diary';
+	import type { Movie } from '@dkrasiev/movie-diary';
 
-	export let movie: MovieShort;
+	export let movie: Movie;
 
 	let url = `/movies/${movie.kinopoiskId}`;
 

@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { MovieShort } from '@dkrasiev/movie-diary';
+	import type { Movie } from '@dkrasiev/movie-diary';
 	import MovieCard from './MovieCard.svelte';
 
-	export let movies: MovieShort[] = [];
+	export let movies: Movie[] = [];
 </script>
 
 <div class="grid gap-4">

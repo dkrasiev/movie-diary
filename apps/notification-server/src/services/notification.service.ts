@@ -1,52 +1,27 @@
-import { PrismaClient } from "database";
-import {
-  MovieShort,
-  PremierUpdateDTO,
-  UserDTO,
-  convertUserToDTO,
-} from "@dkrasiev/movie-diary";
+import { PremierUpdateDTO } from "@dkrasiev/movie-diary";
 import { Channel } from "amqplib";
-import { EXCHANGE, channel } from "../lib/amqp.js";
+import { PrismaClient } from "@prisma/client";
+import dayjs from "dayjs";
 
-const client = new PrismaClient();
-await client.$connect();
+const prisma = new PrismaClient();
+await prisma.$connect();
 
 export class NotificationService {
   constructor(private channel: Channel, private exchange: string) {}
 
   public async checkUpdates() {
-    const updates = new Map<UserDTO, MovieShort>();
-    const users = await client.user
+    return prisma.subscription
       .findMany()
-      .then((users) => users.map((user) => convertUserToDTO(user)));
-
-    for (const user of users) {
-      updates.set(user, {
-        kinopoiskId: 301,
-        nameEn: "The Matrix",
-        posterUrl:
-          "https://kinopoiskapiunofficial.tech/images/posters/kp/301.jpg",
-        posterUrlPreview:
-          "https://kinopoiskapiunofficial.tech/images/posters/kp_small/301.jpg",
-        year: 1999,
-        countries: [],
-        duration: 123123,
-        genres: [],
-        nameRu: "Матрица",
-        premiereRu: "2023-02-02",
-      });
-    }
-
-    return updates;
+      .then((subscriptions) =>
+        subscriptions.filter(({ premiereRu }) => dayjs().diff(premiereRu) > 0)
+      );
   }
 
-  public publish(payload: PremierUpdateDTO) {
+  public publish(payload: PremierUpdateDTO, routingKey: string = "") {
     return this.channel.publish(
       this.exchange,
-      "",
+      routingKey,
       Buffer.from(JSON.stringify(payload))
     );
   }
 }
-
-export default new NotificationService(channel, EXCHANGE);

@@ -1,15 +1,15 @@
 import { USER_TOKEN_SECRET } from '$env/static/private';
-import type { Token } from 'database';
-import jwt from 'jsonwebtoken';
 import type { UserDTO } from '@dkrasiev/movie-diary';
-import prismaClient from '../prisma-client.js';
+import type { Token } from '@prisma/client';
+import jwt from 'jsonwebtoken';
 import { USER_TOKEN_EXPIRE_TIME } from '../constants.js';
+import { prisma } from '../prisma.js';
 
 class TokenService {
 	constructor(private refreshSecret: string) {}
 
 	public saveUserToken(userId: string, token: string): Promise<Token> {
-		return prismaClient.token.upsert({
+		return prisma.token.upsert({
 			create: {
 				userId,
 				token

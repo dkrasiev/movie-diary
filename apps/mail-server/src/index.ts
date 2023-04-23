@@ -1,31 +1,54 @@
-import { MovieShort, PremierUpdateDTO } from "@dkrasiev/movie-diary";
+import { PrismaClient } from "@prisma/client";
+import nodemailer from "nodemailer";
 import amqp from "amqplib";
-import mailService from "./services/mail.service.js";
+import { MailService } from "./services/mail.service.js";
 
-const QUEUE = "email_notification";
+const QUEUE = "email_notifications";
 
 const connection = await amqp.connect("amqp://localhost");
 const channel = await connection.createChannel();
 
-function generateHtml(movie: MovieShort): string {
+const transport = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_PASS,
+  },
+});
+const mailService = new MailService(transport);
+
+const prisma = new PrismaClient();
+await prisma.$connect();
+
+function generateHtml(data: string): string {
   return `
-  <h1>${movie.nameRu || movie.nameEn} premiere</h1>
+  <h1>${data}</h1>
   `;
 }
 
+console.log("consuming...");
 channel.consume(QUEUE, async (message) => {
   if (message) {
     try {
       const content = message.content.toString();
       console.log("consume message: ", content);
 
-      const data = JSON.parse(content) as PremierUpdateDTO;
-      const movie = data.movie;
+      const { userId, kinopoiskId } = JSON.parse(content);
 
-      const to = data.email;
-      const html = generateHtml(movie);
+      if (!userId || !kinopoiskId) {
+        throw new Error("userId or kinopoiskId not found");
+      }
 
-      await mailService.sendMail(to, html, movie.nameRu);
+      const user = await prisma.user.findUnique({ where: { id: userId } });
+      if (!user) {
+        throw new Error("user not found");
+      }
+
+      const html = generateHtml(kinopoiskId);
+
+      await mailService.sendMail(user.email, html, kinopoiskId);
       channel.ack(message);
     } catch (e) {
       console.error(e);

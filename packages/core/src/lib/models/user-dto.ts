@@ -1,4 +1,4 @@
-import type { User } from "database";
+import { User } from "@prisma/client";
 
 export interface UserDTO {
   id: string;

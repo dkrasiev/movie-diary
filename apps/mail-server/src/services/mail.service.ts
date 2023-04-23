@@ -1,6 +1,4 @@
 (await import("dotenv")).config();
-
-import nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
 
 export class MailService {
@@ -14,15 +12,3 @@ export class MailService {
     });
   }
 }
-
-export default new MailService(
-  nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    auth: {
-      user: process.env.MAIL_USER,
-      pass: process.env.MAIL_PASS,
-    },
-  })
-);

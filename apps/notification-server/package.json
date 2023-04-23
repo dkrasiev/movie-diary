@@ -9,14 +9,17 @@
   "devDependencies": {
     "@types/amqplib": "^0.10.1",
     "@types/node": "^18.15.13",
+    "@types/node-cron": "^3.0.7",
     "nodemon": "^2.0.22",
     "ts-node": "^10.9.1",
     "tsconfig": "*",
     "typescript": "^5.0.4"
   },
   "dependencies": {
+    "@dkrasiev/movie-diary": "*",
+    "@prisma/client": "",
     "amqplib": "^0.10.3",
-    "database": "*",
-    "@dkrasiev/movie-diary": "*"
+    "dayjs": "^1.11.7",
+    "node-cron": "^3.0.2"
   }
 }
