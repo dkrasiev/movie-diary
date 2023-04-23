@@ -1,11 +1,5 @@
 import { KINOPOISK_API_TOKEN } from '$env/static/private';
-import {
-	DistributionType,
-	type Distribution,
-	type Month,
-	type Movie,
-	type PremierResponseItem
-} from '@dkrasiev/movie-diary';
+import type { Distribution, Month, Movie, PremierResponseItem } from '@dkrasiev/movie-diary-core';
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
 import { RedisCache } from '../redis-cache';
@@ -53,8 +47,7 @@ export class KinopoiskApiService {
 			.then((distributions) =>
 				distributions.filter(
 					({ type, country }) =>
-						country?.country === 'Россия' &&
-						(type === DistributionType.PREMIERE || type === DistributionType.COUNTRY_SPECIFIC)
+						country?.country === 'Россия' && (type === 'PREMIERE' || type === 'COUNTRY_SPECIFIC')
 				)
 			)
 			.then((distributions) => distributions[0].date)

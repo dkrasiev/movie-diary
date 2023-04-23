@@ -1,5 +1,5 @@
 import kinopoiskApiService from '$lib/server/services/kinopoisk-api.service';
-import { getMonthById, isMonth } from '@dkrasiev/movie-diary';
+import { getMonthById, isMonth } from '@dkrasiev/movie-diary-core';
 import { error, json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 

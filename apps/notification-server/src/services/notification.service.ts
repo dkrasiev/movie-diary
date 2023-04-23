@@ -1,4 +1,4 @@
-import { PremierUpdateDTO } from "@dkrasiev/movie-diary";
+import { PremierUpdateDTO } from "@dkrasiev/movie-diary-core";
 import { Channel } from "amqplib";
 import { PrismaClient } from "@prisma/client";
 import dayjs from "dayjs";

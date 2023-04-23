@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { fetchPremieres } from '$lib/client/fetch-premieres';
 	import MovieGrid from '$lib/components/MovieGrid.svelte';
-	import { Month, getMonthById } from '@dkrasiev/movie-diary';
+	import { Month, getMonthById } from '@dkrasiev/movie-diary-core';
 
 	let year: number = new Date().getFullYear();
 	let month: Month = getMonthById(new Date().getMonth()) || Month.JANUARY;

@@ -1,5 +1,5 @@
 import { USER_TOKEN_SECRET } from '$env/static/private';
-import type { UserDTO } from '@dkrasiev/movie-diary';
+import type { UserDTO } from '@dkrasiev/movie-diary-core';
 import type { Token } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 import { USER_TOKEN_EXPIRE_TIME } from '../constants.js';

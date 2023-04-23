@@ -1,4 +1,4 @@
-import type { Month, MovieShort } from '@dkrasiev/movie-diary';
+import type { Month, MovieShort } from '@dkrasiev/movie-diary-core';
 
 export async function fetchPremieres(year: number, month: Month): Promise<MovieShort[]> {
 	const url =

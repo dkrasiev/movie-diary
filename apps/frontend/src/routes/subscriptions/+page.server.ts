@@ -2,7 +2,7 @@ import kinopoiskApiService from '$lib/server/services/kinopoisk-api.service';
 import subscriptionService from '$lib/server/services/subscription.service';
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import type { Movie } from '@dkrasiev/movie-diary';
+import type { Movie } from '@dkrasiev/movie-diary-core';
 
 export const load = (async ({ locals }) => {
 	const user = locals.user;

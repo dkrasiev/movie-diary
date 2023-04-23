@@ -1,20 +1,3 @@
-export enum PorudctionStatus {
-  FILMING = "FILMING",
-  PRE_PRODUCTION = "PRE_PRODUCTION",
-  COMPLETED = "COMPLETED",
-  ANNOUNCED = "ANNOUNCED",
-  UNKNOWN = "UNKNOWN",
-  POST_PRODUCTION = "POST_PRODUCTION",
-}
-
-export enum MovieType {
-  FILM = "FILM",
-  VIDEO = "VIDEO",
-  TV_SERIES = "TV_SERIES",
-  MINI_SERIES = "MINI_SERIES",
-  TV_SHOW = "TV_SHOW",
-}
-
 export interface Movie {
   kinopoiskId: number;
   imdbId?: string;
@@ -60,8 +43,14 @@ export interface Movie {
 
   isTicketsAvailable: boolean;
 
-  productionStatus?: PorudctionStatus;
-  type: MovieType;
+  productionStatus?:
+    | "FILMING"
+    | "PRE_PRODUCTION"
+    | "COMPLETED"
+    | "ANNOUNCED"
+    | "UNKNOWN"
+    | "POST_PRODUCTION";
+  type: "FILM" | "VIDEO" | "TV_SERIES" | "MINI_SERIES" | "TV_SHOW";
 
   ratingMpaa?: string;
   ratingAgeLimits?: string;
@@ -95,24 +84,13 @@ export interface PremierResponseItem {
   genres: Genre[];
 }
 
-export enum DistributionType {
-  LOCAL = "LOCAL",
-  COUNTRY_SPECIFIC = "COUNTRY_SPECIFIC",
-  PREMIERE = "PREMIERE",
-  ALL = "ALL",
-  WORLD_PREMIER = "WORLD_PREMIER",
-}
+export enum DistributionType {}
 
-export enum DistributionSubType {
-  CINEMA = "CINEMA",
-  DVD = "DVD",
-  DIGITAL = "DIGITAL",
-  BLURAY = "BLURAY",
-}
+export enum DistributionSubType {}
 
 export interface Distribution {
-  type: DistributionType;
-  subType?: DistributionSubType;
+  type: "LOCAL" | "COUNTRY_SPECIFIC" | "PREMIERE" | "ALL" | "WORLD_PREMIER";
+  subType?: "CINEMA" | "DVD" | "DIGITAL" | "BLURAY";
   date?: string;
   reRelease?: boolean;
   country?: Country;
