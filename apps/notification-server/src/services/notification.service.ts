@@ -10,11 +10,18 @@ export class NotificationService {
   constructor(private channel: Channel, private exchange: string) {}
 
   public async checkUpdates() {
-    return prisma.subscription
-      .findMany()
-      .then((subscriptions) =>
-        subscriptions.filter(({ premiereRu }) => dayjs().diff(premiereRu) > 0)
-      );
+    return prisma.subscription.findMany().then((subscriptions) =>
+      subscriptions.filter(async ({ premiereId }) => {
+        const premiere = await prisma.premiere.findUnique({
+          where: { id: premiereId },
+        });
+        if (!premiere) {
+          return false;
+        }
+
+        return dayjs().diff(premiere.premiereRu) > 0;
+      })
+    );
   }
 
   public publish(payload: PremierUpdateDTO, routingKey: string = "") {

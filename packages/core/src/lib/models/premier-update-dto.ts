@@ -1,4 +1,4 @@
 export interface PremierUpdateDTO {
   userId: string;
-  kinopoiskId: number;
+  premiereId: number;
 }

@@ -1,28 +1,40 @@
-import type { PrismaClient, Subscription } from '@prisma/client';
+import type { Subscription, Premiere } from '@prisma/client';
 import prisma from '../prisma';
 
 export class SubscriptionService {
-	constructor(private prisma: PrismaClient) {}
-
-	public async getSubscriptions(userId: string): Promise<Subscription[]> {
-		return this.prisma.subscription.findMany({ where: { userId } });
+	public async getUserPremieres(userId: string): Promise<Premiere[]> {
+		return this.getUserSubscriptions(userId).then(
+			(subscriptions) =>
+				Promise.all(
+					subscriptions.map(({ premiereId }) =>
+						prisma.premiere.findUnique({ where: { id: premiereId } })
+					)
+				) as Promise<Premiere[]>
+		);
 	}
 
-	public async subscribe(
+	private async getUserSubscriptions(userId: string): Promise<Subscription[]> {
+		return prisma.subscription.findMany({ where: { userId } });
+	}
+
+	public async subscribeUserToPremiere(
 		userId: string,
-		kinopoiskId: number,
-		premiereRu: string
-	): Promise<Subscription> {
-		return this.prisma.subscription.create({
-			data: { userId, kinopoiskId, premiereRu }
+		premiereId: number
+	): Promise<Subscription | undefined> {
+		return prisma.premiere.findUnique({ where: { id: premiereId } }).then((premiere) => {
+			if (premiere) {
+				return prisma.subscription.create({ data: { userId, premiereId: premiere?.id } });
+			}
+
+			return undefined;
 		});
 	}
 
-	public async unsubscribe(userId: string, kinopoiskId: number) {
-		const subscription = await this.prisma.subscription.findFirst({
+	public async unsubscribeUserFromPremiere(userId: string, premiereId: number) {
+		const subscription = await prisma.subscription.findFirst({
 			where: {
-				userId,
-				kinopoiskId
+				premiereId,
+				userId
 			}
 		});
 
@@ -36,4 +48,4 @@ export class SubscriptionService {
 	}
 }
 
-export default new SubscriptionService(prisma);
+export default new SubscriptionService();

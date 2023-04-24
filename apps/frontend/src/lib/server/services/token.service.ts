@@ -1,4 +1,4 @@
-import { USER_TOKEN_SECRET } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import type { UserDTO } from '@dkrasiev/movie-diary-core';
 import type { Token } from '@prisma/client';
 import jwt from 'jsonwebtoken';
@@ -31,7 +31,7 @@ class TokenService {
 
 	public verifyUserToken(token: string): boolean {
 		try {
-			const result = jwt.verify(token, USER_TOKEN_SECRET);
+			const result = jwt.verify(token, env.USER_TOKEN_SECRET);
 			return Boolean(result);
 		} catch (e) {
 			return false;
@@ -39,4 +39,4 @@ class TokenService {
 	}
 }
 
-export default new TokenService(USER_TOKEN_SECRET);
+export default new TokenService(env.USER_TOKEN_SECRET);

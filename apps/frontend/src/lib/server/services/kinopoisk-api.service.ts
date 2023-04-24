@@ -1,5 +1,5 @@
-import { KINOPOISK_API_TOKEN } from '$env/static/private';
-import type { Distribution, Month, Movie, PremierResponseItem } from '@dkrasiev/movie-diary-core';
+import { env } from '$env/dynamic/private';
+import type { Month, Movie, PremierResponseItem } from '@dkrasiev/movie-diary-core';
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
 import { RedisCache } from '../redis-cache';
@@ -41,25 +41,6 @@ export class KinopoiskApiService {
 			.then((response) => response.data.items)
 			.catch(() => []);
 	}
-
-	public async getPremiereDateRu(kinopoiskId: number): Promise<string | undefined> {
-		return this.getDestributionInfo(kinopoiskId)
-			.then((distributions) =>
-				distributions.filter(
-					({ type, country }) =>
-						country?.country === 'Россия' && (type === 'PREMIERE' || type === 'COUNTRY_SPECIFIC')
-				)
-			)
-			.then((distributions) => distributions[0].date)
-			.catch(() => undefined);
-	}
-
-	private async getDestributionInfo(kinopoiskId: number): Promise<Distribution[]> {
-		return this.api
-			.get<{ total: number; items: Distribution[] }>(`api/v2.2/films/${kinopoiskId}/distributions`)
-			.then((response) => response.data.items)
-			.catch(() => []);
-	}
 }
 
-export default new KinopoiskApiService(KINOPOISK_API_TOKEN);
+export default new KinopoiskApiService(env.KINOPOISK_API_TOKEN);

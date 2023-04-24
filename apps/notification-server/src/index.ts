@@ -18,11 +18,11 @@ amqplib
       console.log("checking");
       const updates = await notificationService.checkUpdates();
 
-      for (const { userId, kinopoiskId } of updates) {
-        console.log("send for user", userId, "and movie", kinopoiskId);
-        notificationService.publish({ userId, kinopoiskId });
+      for (const { userId, premiereId } of updates) {
+        console.log("send for user", userId, "and movie", premiereId);
+        notificationService.publish({ userId, premiereId });
         await prisma.subscription.deleteMany({
-          where: { userId, kinopoiskId },
+          where: { userId, premiereId },
         });
       }
     }

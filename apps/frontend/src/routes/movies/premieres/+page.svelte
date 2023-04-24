@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { fetchPremieres } from '$lib/client/fetch-premieres';
-	import MovieGrid from '$lib/components/MovieGrid.svelte';
+	import PremiereGrid from '$lib/components/PremiereGrid.svelte';
 	import { Month, getMonthById } from '@dkrasiev/movie-diary-core';
 
 	let year: number = new Date().getFullYear();
@@ -21,9 +21,9 @@
 {#await premieres}
 	<h1>Loading...</h1>
 {:then movies}
-	{#if movies?.length}
+	{#if movies?.length > 0}
 		<h1>Premieres</h1>
-		<MovieGrid {movies} />
+		<PremiereGrid premieres={movies} />
 	{:else}
 		<h1>Premieres not found</h1>
 	{/if}

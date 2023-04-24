@@ -40,6 +40,21 @@ model Right {
   roles Role[]
 }
 
+model Premiere {
+  id               Int     @id
+  nameRu           String?
+  nameEn           String?
+  posterUrl        String
+  posterUrlPreview String
+  premiereRu       String
+  duration         Int?
+
+  year  Int
+  month String
+
+  subscription Subscription[]
+}
+
 model Token {
   token  String @id
   userId String @unique
@@ -52,7 +67,6 @@ model Subscription {
   userId String
   user   User   @relation(fields: [userId], references: [id])
 
-  premiereRu String
-
-  kinopoiskId Int
+  premiereId Int
+  premiere   Premiere @relation(fields: [premiereId], references: [id])
 }
