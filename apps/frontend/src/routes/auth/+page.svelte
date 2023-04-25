@@ -4,30 +4,29 @@
 	export let form: ActionData;
 </script>
 
-<form class="flex flex-col max-w-md mx-auto" method="post">
-	<label for="email">Email</label>
-	<input id="email" name="email" type="email" required />
+<form class="max-w-sm mx-auto" method="post">
+	<label class="label">
+		<span> Email </span>
+		<input class="input" name="email" type="email" required />
+	</label>
 
-	<label for="password">Password</label>
-	<input id="password" name="password" type="password" required />
+	<label class="label">
+		<span>Password</span>
+		<input class="input" name="password" type="password" required />
+	</label>
 
-	<div class="flex justify-content">
-		<button formaction="?/login">Log In</button>
-		<div class="w-2" />
-		<button formaction="?/register">Register</button>
+	<div class="btn-group flex">
+		<button class="btn flex-1" formaction="?/login">Log In</button>
+		<button class="btn flex-1" formaction="?/register">Register</button>
 	</div>
 </form>
 
 {#if form?.error}
-	<p class="text-red-500 text-center">{form.error.status}: {form.error.data}</p>
+	<p class="text-error-300">{form.error.status}: {form.error.data}</p>
 {/if}
 
 <style>
 	form > * {
 		@apply mb-2;
-	}
-
-	button {
-		@apply flex-1;
 	}
 </style>

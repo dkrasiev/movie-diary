@@ -1,21 +1,21 @@
 <script lang="ts">
-	import Header from '$lib/components/Header.svelte';
-	import Footer from '$lib/components/Footer.svelte';
+	// Selected Skeleton theme:
+	import '@skeletonlabs/skeleton/themes/theme-vintage.css';
+	// Skeletons required styles:
+	import '@skeletonlabs/skeleton/styles/all.css';
+	// global stylesheet
 	import './styles.css';
-	import type { LayoutServerData } from './$types';
 
-	export let data: LayoutServerData;
+	import Header from '$lib/components/Header.svelte';
+	import { AppShell } from '@skeletonlabs/skeleton';
 </script>
 
-<div class="min-h-screen flex flex-col">
-	<Header user={data.user} />
+<AppShell>
+	<svelte:fragment slot="header">
+		<Header />
+	</svelte:fragment>
 
-	<main class="container mx-auto flex-1 p-4">
+	<main class="container mx-auto p-4">
 		<slot />
 	</main>
-
-	<Footer />
-</div>
-
-<style>
-</style>
+</AppShell>

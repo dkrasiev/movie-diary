@@ -6,9 +6,10 @@
 	export let data: PageServerData;
 </script>
 
+<h1>Your subscriptions</h1>
+
 {#if data.userPremieres.length > 0}
-	<h1>Your subscriptions</h1>
 	<MovieGrid premieres={data.userPremieres} />
 {:else}
-	<h1>No subscriptions</h1>
+	<h2>Your subscription list is empty</h2>
 {/if}
