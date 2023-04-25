@@ -18,11 +18,12 @@
 	</select>
 </div>
 
+<h1>Premieres</h1>
+
 {#await premieres}
 	<h1>Loading...</h1>
 {:then movies}
 	{#if movies?.length > 0}
-		<h1>Premieres</h1>
 		<PremiereGrid premieres={movies} />
 	{:else}
 		<h1>Premieres not found</h1>

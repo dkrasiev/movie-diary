@@ -1,4 +1,4 @@
-import type { Subscription, Premiere } from '@prisma/client';
+import type { Premiere, Subscription } from '@prisma/client';
 import prisma from '../prisma';
 
 export class SubscriptionService {
@@ -6,6 +6,20 @@ export class SubscriptionService {
 		return prisma.subscription
 			.findMany({ where: { userId }, select: { premiere: true } })
 			.then((results) => results.map((result) => result.premiere));
+	}
+
+	public async getSubscription(userId: string, premiereId: number): Promise<Subscription | null> {
+		return prisma.subscription.findFirst({ where: { userId, premiereId } });
+	}
+
+	public async toggleSubscription(userId: string, premiereId: number) {
+		const subscription = await prisma.subscription.findFirst({ where: { userId, premiereId } });
+
+		if (subscription) {
+			this.unsubscribeUserFromPremiere(userId, premiereId);
+		} else {
+			this.subscribeUserToPremiere(userId, premiereId);
+		}
 	}
 
 	public async subscribeUserToPremiere(

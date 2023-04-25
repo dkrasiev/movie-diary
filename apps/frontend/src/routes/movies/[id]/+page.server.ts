@@ -1,37 +1,41 @@
-import prisma from '$lib/server/prisma';
+import premiereService from '$lib/server/services/premiere.service';
 import subscriptionService from '$lib/server/services/subscription.service';
-import { error } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
+import type { Premiere, Subscription } from '@prisma/client';
 import type { Actions, PageServerLoad } from './$types';
 
-export const load = (async ({ params }) => {
+export const load = (async ({ params, locals }) => {
+	const userId = locals.user?.id;
 	const premiereId = Number(params.id);
-	if (!premiereId) {
-		throw error(400, 'Bad Request');
+
+	const response: {
+		premiere: Premiere | null;
+		subscription: Subscription | null;
+	} = {
+		premiere: null,
+		subscription: null
+	};
+
+	if (premiereId) {
+		response.premiere = await premiereService.getPremiere(premiereId);
+	}
+	if (userId) {
+		response.subscription = await subscriptionService.getSubscription(userId, premiereId);
 	}
 
-	return {
-		premiere: await prisma.premiere.findUnique({ where: { id: premiereId } })
-	};
+	return response;
 }) satisfies PageServerLoad;
 
 export const actions = {
-	subscribe: async ({ params, locals }) => {
-		const user = locals.user;
+	default: async ({ params, locals, url }) => {
+		const userId = locals.user?.id;
 		const premiereId = Number(params.id);
-		if (!user || !premiereId) {
-			return;
+		if (!userId || !premiereId) {
+			throw error(400, 'Bad Request');
 		}
 
-		await subscriptionService.subscribeUserToPremiere(user.id, premiereId);
-	},
+		await subscriptionService.toggleSubscription(userId, premiereId);
 
-	unsubscribe: async ({ params, locals }) => {
-		const user = locals.user;
-		const premiereId = Number(params.id);
-		if (!user || !premiereId) {
-			return;
-		}
-
-		await subscriptionService.unsubscribeUserFromPremiere(user.id, premiereId);
+		throw redirect(302, url.href);
 	}
 } satisfies Actions;
