@@ -12,21 +12,23 @@
 
 <h1>Premieres</h1>
 
-<div class="flex mb-4">
+<form class="flex mb-4">
 	<label class="label mr-4">
-		<span>Year</span>
-		<input class="input p-2" name="year" type="number" bind:value={year} />
+		Year
+		<input class="input w-24" name="year" type="number" bind:value={year} />
 	</label>
 
-	<label class="label">
-		<span>Month</span>
-		<select class="select" name="month" bind:value={month}>
+	<label class="label mr-4">
+		Month
+		<select class="select w-48" name="month" bind:value={month}>
 			{#each Object.values(Month) as month}
 				<option value={month}>{month}</option>
 			{/each}
 		</select>
 	</label>
-</div>
+
+	<button class="btn variant-filled-primary self-end">submit</button>
+</form>
 
 {#await premieres}
 	<ProgressRadial
@@ -46,4 +48,11 @@
 {/await}
 
 <style>
+	form {
+		@apply max-w-sm;
+	}
+
+	form > * {
+		@apply w-full h-full;
+	}
 </style>

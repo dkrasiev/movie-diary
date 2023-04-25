@@ -18,3 +18,7 @@ h3 {
 .input {
 	@apply p-2;
 }
+
+.select {
+	@apply rounded-sm;
+}

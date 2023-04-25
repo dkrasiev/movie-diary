@@ -15,9 +15,9 @@
 		<input class="input" name="password" type="password" required />
 	</label>
 
-	<div class="btn-group flex">
-		<button class="btn flex-1" formaction="?/login">Log In</button>
-		<button class="btn flex-1" formaction="?/register">Register</button>
+	<div class="flex btn-group">
+		<button class="flex-1" formaction="?/login">Log In</button>
+		<button class="flex-1" formaction="?/register">Register</button>
 	</div>
 </form>
 

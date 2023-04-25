@@ -1,6 +1,6 @@
 // See https://kit.svelte.dev/docs/types#app
 
-import type { UserDTO } from '$lib/dtos/user-dto';
+import type { UserDTO } from '@dkrasiev/movie-diary-core';
 
 // for information about these interfaces
 declare global {
