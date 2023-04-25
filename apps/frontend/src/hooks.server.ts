@@ -6,17 +6,17 @@ import { sequence } from '@sveltejs/kit/hooks';
 
 const authenticateUser: Handle = async ({ event, resolve }) => {
 	const token = event.cookies.get(USER_TOKEN_KEY);
+
 	if (token) {
-		const result = await authService.refresh(token);
+		const result = await authService.refresh(token).catch(() => undefined);
 
 		if (result) {
 			setTokenCookie(event.cookies, result.token);
 		} else {
 			event.cookies.delete(USER_TOKEN_KEY);
-			throw redirect(302, '/login');
 		}
 
-		event.locals.user = result.user;
+		event.locals.user = result?.user;
 	}
 
 	return resolve(event);

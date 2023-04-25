@@ -1,18 +1,17 @@
 <script lang="ts">
-	import { fetchPremieres } from '$lib/client/fetch-premieres';
 	import PremiereGrid from '$lib/components/PremiereGrid.svelte';
-	import { Month, getMonthById } from '@dkrasiev/movie-diary-core';
-	import { ProgressRadial } from '@skeletonlabs/skeleton';
+	import { Month } from '@dkrasiev/movie-diary-core';
+	import type { PageServerData } from './$types';
 
-	let year: number = new Date().getFullYear();
-	let month: Month = getMonthById(new Date().getMonth()) || Month.JANUARY;
+	export let data: PageServerData;
 
-	$: premieres = fetchPremieres(year, month);
+	let year: number = data.year;
+	let month: Month = data.month;
 </script>
 
 <h1>Premieres</h1>
 
-<form class="flex mb-4">
+<form class="flex mb-4" action={`?year=${year}&month=${month}`}>
 	<label class="label mr-4">
 		Year
 		<input class="input w-24" name="year" type="number" bind:value={year} />
@@ -30,22 +29,11 @@
 	<button class="btn variant-filled-primary self-end">submit</button>
 </form>
 
-{#await premieres}
-	<ProgressRadial
-		class="mx-auto mt-16"
-		stroke={100}
-		meter="stroke-primary-500"
-		track="stroke-primary-500/30"
-	/>
-{:then movies}
-	{#if movies?.length > 0}
-		<PremiereGrid premieres={movies} />
-	{:else}
-		<h1>Premieres not found</h1>
-	{/if}
-{:catch}
-	<h1>Error</h1>
-{/await}
+{#if data.premieres?.length > 0}
+	<PremiereGrid premieres={data.premieres} />
+{:else}
+	<h3>Premieres not found</h3>
+{/if}
 
 <style>
 	form {
