@@ -7,5 +7,7 @@ export const load = (async ({ locals }) => {
 		throw redirect(302, '/');
 	}
 
-	return { userPremieres: await subscriptionService.getUserPremieres(locals.user.id) };
+	return {
+		userPremieres: await subscriptionService.getUserPremieres(locals.user.id)
+	};
 }) satisfies PageServerLoad;

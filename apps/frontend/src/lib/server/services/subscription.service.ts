@@ -3,18 +3,9 @@ import prisma from '../prisma';
 
 export class SubscriptionService {
 	public async getUserPremieres(userId: string): Promise<Premiere[]> {
-		return this.getUserSubscriptions(userId).then(
-			(subscriptions) =>
-				Promise.all(
-					subscriptions.map(({ premiereId }) =>
-						prisma.premiere.findUnique({ where: { id: premiereId } })
-					)
-				) as Promise<Premiere[]>
-		);
-	}
-
-	private async getUserSubscriptions(userId: string): Promise<Subscription[]> {
-		return prisma.subscription.findMany({ where: { userId } });
+		return prisma.subscription
+			.findMany({ where: { userId }, select: { premiere: true } })
+			.then((results) => results.map((result) => result.premiere));
 	}
 
 	public async subscribeUserToPremiere(
