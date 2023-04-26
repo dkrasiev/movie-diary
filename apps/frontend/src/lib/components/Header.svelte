@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { AppBar } from '@skeletonlabs/skeleton';
+	import { AppBar, LightSwitch } from '@skeletonlabs/skeleton';
 
 	interface Route {
 		name: string;
@@ -47,6 +47,7 @@
 				<button class="btn">Log out</button>
 			</form>
 		{/if}
+		<LightSwitch />
 	</svelte:fragment>
 </AppBar>
 
