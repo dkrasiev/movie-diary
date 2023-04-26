@@ -12,24 +12,39 @@
 	const name = premiere?.nameRu || premiere?.nameEn || 'Name not found';
 </script>
 
-<div class="relative">
-	<button class="btn absolute left-0 h-full" on:click={() => history.back()}>back</button>
-	<h1 class={'after:absolute after:text-sm' + (released ? " after:content-['released']" : '')}>
-		{name}
-	</h1>
-</div>
-
-{#if $page.data.user && premiere && released === false}
-	<form class="mb-4" method="post">
-		<button class="btn variant-filled-primary">
-			{data.subscription ? 'Unsubscribe' : 'Subscribe'}
-		</button>
-	</form>
-
-	{#if data.subscription}
-		<h3>Your subscription</h3>
-		<pre class="mb-4">{JSON.stringify(data.subscription, undefined, 2)}</pre>
+<ol class="breadcrumb mb-4">
+	<li class="crumb"><a href="/premieres">Premieres</a></li>
+	{#if premiere}
+		<li class="crumb-separator" aria-hidden>&rsaquo;</li>
+		<li class="crumb">{name}</li>
 	{/if}
+</ol>
+
+{#if premiere}
+	<div class="grid grid-cols-1 sm:grid-cols-[256px_auto] md:grid-cols-[320px_auto]">
+		<img class="aspect-[2/3] rounded" src={premiere.posterUrl} alt={`${name} poster`} />
+		<div class="mt-8 sm:mt-0 sm:ml-8">
+			<h1 class="text-left">{premiere.nameRu} ({premiere.year})</h1>
+			<h2>{premiere.nameEn}</h2>
+
+			{#if $page.data.user && premiere && released === false}
+				<form class="mb-4" method="post">
+					<button class="btn variant-filled-primary">
+						{data.subscription ? 'Unsubscribe' : 'Subscribe'}
+					</button>
+				</form>
+
+				<!-- {#if data.subscription}
+					<h3>Your subscription</h3>
+					<pre class="mb-4">{JSON.stringify(data.subscription, undefined, 2)}</pre>
+				{/if} -->
+			{/if}
+
+			<pre class="overflow-x-scroll w-full">{JSON.stringify(premiere, undefined, 2)}</pre>
+		</div>
+	</div>
+{:else}
+	<h2>Premiere not found</h2>
 {/if}
 
-<pre>{JSON.stringify(premiere, undefined, 2)}</pre>
+<!-- <pre>{JSON.stringify(premiere, undefined, 2)}</pre> -->

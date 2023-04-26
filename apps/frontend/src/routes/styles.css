@@ -20,5 +20,5 @@ h3 {
 }
 
 .select {
-	@apply rounded-sm;
+	@apply rounded-token;
 }

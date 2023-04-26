@@ -11,22 +11,18 @@
 
 <h1>Premieres</h1>
 
-<form class="flex mb-4" action={`?year=${year}&month=${month}`}>
-	<label class="label mr-4">
-		Year
-		<input class="input w-24" name="year" type="number" bind:value={year} />
-	</label>
+<form class="grid grid-cols-[4rem_auto] mb-4 gap-y-2 sm:flex gap-4">
+	<label class="label sm:self-center" for="year"> Year </label>
+	<input class="input sm:w-24" id="year" name="year" type="number" bind:value={year} />
 
-	<label class="label mr-4">
-		Month
-		<select class="select w-48" name="month" bind:value={month}>
-			{#each Object.values(Month) as month}
-				<option value={month}>{month}</option>
-			{/each}
-		</select>
-	</label>
+	<label class="label sm:self-center" for="month"> Month </label>
+	<select class="select sm:w-48" id="month" name="month" bind:value={month}>
+		{#each Object.values(Month) as month}
+			<option value={month}>{month}</option>
+		{/each}
+	</select>
 
-	<button class="btn variant-filled-primary self-end">submit</button>
+	<button class="btn variant-filled-primary self-end col-start-1 col-end-3">submit</button>
 </form>
 
 {#if data.premieres?.length > 0}
@@ -34,13 +30,3 @@
 {:else}
 	<h3>Premieres not found</h3>
 {/if}
-
-<style>
-	form {
-		@apply max-w-sm;
-	}
-
-	form > * {
-		@apply w-full h-full;
-	}
-</style>

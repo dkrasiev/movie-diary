@@ -2,10 +2,20 @@ import type { User } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import tokenService from './token.service';
 import { convertUserToDTO } from '@dkrasiev/movie-diary-core';
-import { conflictResponse, unauthorizedResponse } from '../http-utils/responses';
+import { conflictResponse, notFoundResponse, unauthorizedResponse } from '../http-utils/responses';
+import { v4, v5 } from 'uuid';
 import prisma from '../prisma';
 
 class AuthService {
+	public async activate(activationLink: string) {
+		const user = await this.getUserByActivationLink(activationLink);
+		if (!user) {
+			throw notFoundResponse();
+		}
+
+		return this.generateAndSaveUserTokens(user);
+	}
+
 	public async register(email: string, password: string) {
 		const candidate = await this.getUserByEmail(email);
 		if (candidate) {
@@ -13,8 +23,12 @@ class AuthService {
 		}
 
 		const user = await this.createUser(email, password);
-
-		return this.generateAndSaveUserTokens(user);
+		prisma.user.update({
+			data: {
+				activationLink: v4()
+			},
+			where: { id: user.id }
+		});
 	}
 
 	public async login(email: string, password: string) {
@@ -55,6 +69,10 @@ class AuthService {
 
 	private async getUserByEmail(email: string): Promise<User | null> {
 		return prisma.user.findUnique({ where: { email } });
+	}
+
+	private async getUserByActivationLink(activationLink: string): Promise<User | null> {
+		return prisma.user.findUnique({ where: { activationLink } });
 	}
 
 	private async getUserByToken(token: string): Promise<User | null> {

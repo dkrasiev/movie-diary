@@ -16,7 +16,7 @@ model User {
   password String
 
   activated      Boolean @default(false)
-  activationLink String?
+  activationLink String? @unique
 
   roleId String @default("0")
   role   Role   @relation(fields: [roleId], references: [id])

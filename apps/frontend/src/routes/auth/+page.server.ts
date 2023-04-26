@@ -50,12 +50,14 @@ export const actions = {
 		}
 
 		try {
-			const { token } = await authService.register(email, password);
-			setTokenCookie(cookies, token);
-			throw redirect(302, '/auth');
+			await authService.register(email, password);
+			return {
+				success: true,
+				message: 'Check your email'
+			};
 		} catch (e) {
-			if (e instanceof HttpError) {
-				return { error: { status: e.status, data: e.data } };
+			if (e instanceof HttpError && typeof e.data === 'string') {
+				return { error: true, message: e.data };
 			}
 
 			throw e;
@@ -65,5 +67,11 @@ export const actions = {
 	logout: async ({ cookies }) => {
 		cookies.delete(USER_TOKEN_KEY);
 		throw redirect(302, '/auth');
+	},
+
+	code: async () => {
+		return {
+			error: { status: 12323, data: 'not implemented' }
+		};
 	}
 } satisfies Actions;
