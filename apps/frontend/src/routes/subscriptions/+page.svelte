@@ -1,15 +1,19 @@
 <script lang="ts">
-	import MovieGrid from '$lib/components/PremiereGrid.svelte';
-
+	import PremiereGrid from '$lib/components/PremiereGrid.svelte';
+	import type { ExpandedPremiereResponse } from '@dkrasiev/movie-diary-core';
 	import type { PageServerData } from './$types';
 
 	export let data: PageServerData;
+
+	const premieres: ExpandedPremiereResponse[] = data.subscriptions.map(
+		(subscription) => subscription.expand?.premiere
+	) as ExpandedPremiereResponse[];
 </script>
 
 <h1>Your subscriptions</h1>
 
-{#if data.userPremieres.length > 0}
-	<MovieGrid premieres={data.userPremieres} />
+{#if premieres.length > 0}
+	<PremiereGrid {premieres} />
 {:else}
 	<h2>Your subscription list is empty</h2>
 {/if}

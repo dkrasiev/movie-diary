@@ -1,25 +1,34 @@
-import { USER_TOKEN_KEY } from '$lib/server/constants';
-import { setTokenCookie } from '$lib/server/http-utils/set-token-cookie';
-import authService from '$lib/server/services/auth.service';
+import { POCKETBASE_URL } from '$env/static/private';
+import { Collections } from '@dkrasiev/movie-diary-core';
 import { redirect, type Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
+import PocketBase from 'pocketbase';
 
 const authenticateUser: Handle = async ({ event, resolve }) => {
-	const token = event.cookies.get(USER_TOKEN_KEY);
+	event.locals.pb = new PocketBase(POCKETBASE_URL);
+	event.locals.pb.authStore.loadFromCookie(event.request.headers.get('cookie') || '');
 
-	if (token) {
-		const result = await authService.refresh(token).catch(() => undefined);
-
-		if (result) {
-			setTokenCookie(event.cookies, result.token);
-		} else {
-			event.cookies.delete(USER_TOKEN_KEY);
+	try {
+		// get an up-to-date auth store state by veryfing and refreshing the loaded auth model (if any)
+		if (event.locals.pb.authStore.isValid && event.locals.pb.authStore.model?.verified) {
+			await event.locals.pb.collection(Collections.Users).authRefresh();
+			event.locals.user = structuredClone(event.locals.pb.authStore.model);
 		}
-
-		event.locals.user = result?.user;
+	} catch (_) {
+		// clear the auth store on failed refresh
+		event.locals.pb.authStore.clear();
 	}
 
-	return resolve(event);
+	const response = await resolve(event);
+
+	response.headers.set(
+		'set-cookie',
+		event.locals.pb.authStore.exportToCookie({
+			secure: false
+		})
+	);
+
+	return response;
 };
 
 const redirectRootToPremieres: Handle = ({ event, resolve }) => {

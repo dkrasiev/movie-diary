@@ -5,26 +5,26 @@
 	interface Route {
 		name: string;
 		path: string;
-		exact?: boolean;
+		checkPath: (url: string) => boolean;
 	}
 
-	const routes: Route[] = [{ name: 'Premieres', path: '/premieres' }];
+	const routes: Route[] = [
+		{ name: 'Premieres', path: '/premieres', checkPath: (url) => url.startsWith('/premieres') }
+	];
 
 	if ($page.data.user) {
-		routes.push({ name: 'Subscriptions', path: '/subscriptions' });
+		routes.push({
+			name: 'Subscriptions',
+			path: '/subscriptions',
+			checkPath: (url) => url.startsWith('/subscriptions')
+		});
 	} else {
-		routes.push({ name: 'Auth', path: '/auth' });
+		routes.push({
+			name: 'Auth',
+			path: '/login',
+			checkPath: (url) => url.startsWith('/login') || url.startsWith('/register')
+		});
 	}
-
-	$: checkRoute = (route: Route) => {
-		const path = $page.url.pathname;
-
-		if (route.exact) {
-			return path === route.path;
-		}
-
-		return path.startsWith(route.path);
-	};
 </script>
 
 <AppBar gridColumns="grid-cols-3" slotDefault="place-self-center" slotTrail="place-content-end">
@@ -33,8 +33,8 @@
 	</svelte:fragment>
 	<nav>
 		<ul class="flex">
-			{#each routes as route (route.path)}
-				<li class="mx-2" aria-current={checkRoute(route) ? 'page' : undefined}>
+			{#each routes as route}
+				<li class="mx-2" aria-current={route.checkPath($page.url.pathname) ? 'page' : undefined}>
 					<a href={route.path}>{route.name}</a>
 				</li>
 			{/each}
@@ -43,7 +43,7 @@
 
 	<svelte:fragment slot="trail">
 		{#if $page.data.user}
-			<form action="/auth?/logout" method="post">
+			<form action="/logout" method="post">
 				<button class="btn">Log out</button>
 			</form>
 		{/if}

@@ -1,5 +1,5 @@
 import { env } from '$env/dynamic/private';
-import type { Month, Movie, PremierResponseItem } from '@dkrasiev/movie-diary-core';
+import type { Month, Film, PremiereResponseItem } from '@dkrasiev/movie-diary-core';
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
 import { RedisCache } from '../redis-cache';
@@ -20,9 +20,9 @@ export class KinopoiskApiService {
 	@RedisCache({
 		prefix: 'movie'
 	})
-	public async getMovie(movieId: number): Promise<Movie | undefined> {
+	public async getMovie(movieId: number): Promise<Film | undefined> {
 		return this.api
-			.get<Movie>(`api/v2.2/films/${movieId}`)
+			.get<Film>(`api/v2.2/films/${movieId}`)
 			.then((response) => response.data)
 			.catch(() => undefined);
 	}
@@ -30,9 +30,9 @@ export class KinopoiskApiService {
 	@RedisCache({
 		prefix: 'premieres'
 	})
-	public async getPremieres(year: number, month: Month): Promise<PremierResponseItem[]> {
+	public async getPremieres(year: number, month: Month): Promise<PremiereResponseItem[]> {
 		return this.api
-			.get<{ total: number; items: PremierResponseItem[] }>(`api/v2.2/films/premieres`, {
+			.get<{ total: number; items: PremiereResponseItem[] }>(`api/v2.2/films/premieres`, {
 				params: {
 					year,
 					month

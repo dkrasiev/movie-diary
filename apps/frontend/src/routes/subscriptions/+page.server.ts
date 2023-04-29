@@ -1,15 +1,10 @@
-import subscriptionService from '$lib/server/services/subscription.service';
-import { redirect } from '@sveltejs/kit';
+import { SubscriptionService } from '$lib/server/services/subscription.service';
 import type { PageServerLoad } from './$types';
 
-export const load = (async ({ locals, parent }) => {
-	await parent();
-
-	if (!locals.user?.id) {
-		throw redirect(302, '/login');
-	}
+export const load = (async ({ locals }) => {
+	const subscriptionService = new SubscriptionService(locals.pb);
 
 	return {
-		userPremieres: await subscriptionService.getUserPremieres(locals.user?.id)
+		subscriptions: structuredClone(await subscriptionService.getSubscriptionList())
 	};
 }) satisfies PageServerLoad;

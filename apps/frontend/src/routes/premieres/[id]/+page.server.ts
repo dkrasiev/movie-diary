@@ -1,41 +1,42 @@
-import premiereService from '$lib/server/services/premiere.service';
-import subscriptionService from '$lib/server/services/subscription.service';
-import { error, redirect } from '@sveltejs/kit';
-import type { Premiere, Subscription } from '@prisma/client';
+import kinopoiskApiService from '$lib/server/services/kinopoisk-api.service';
+import { PremiereService } from '$lib/server/services/premiere.service';
+import { SubscriptionService } from '$lib/server/services/subscription.service';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load = (async ({ params, locals }) => {
-	const userId = locals.user?.id;
-	const premiereId = Number(params.id);
+	const premiereId = params.id;
 
-	const response: {
-		premiere: Premiere | null;
-		subscription: Subscription | null;
-	} = {
-		premiere: null,
-		subscription: null
+	const premiereService = new PremiereService(kinopoiskApiService, locals.pb);
+
+	const premiere = structuredClone(await premiereService.getPremiere(premiereId));
+	const subscription = premiere.expand?.['subscriptions(premiere)']?.[0];
+
+	return {
+		premiere: premiere,
+		subscription: subscription
 	};
-
-	if (premiereId) {
-		response.premiere = await premiereService.getPremiere(premiereId);
-	}
-	if (userId) {
-		response.subscription = await subscriptionService.getSubscription(userId, premiereId);
-	}
-
-	return response;
 }) satisfies PageServerLoad;
 
 export const actions = {
-	default: async ({ params, locals, url }) => {
-		const userId = locals.user?.id;
-		const premiereId = Number(params.id);
-		if (!userId || !premiereId) {
-			throw error(400, 'Bad Request');
-		}
+	subscribe: async ({ params, locals }) => {
+		const premiereId = params.id;
 
-		await subscriptionService.toggleSubscription(userId, premiereId);
+		const subscriptionService = new SubscriptionService(locals.pb);
+		await subscriptionService.subscribe(premiereId);
 
-		throw redirect(302, url.href);
+		return {
+			subscribeSucces: true
+		};
+	},
+
+	unsubscribe: async ({ params, locals }) => {
+		const premiereId = params.id;
+
+		const subscriptionService = new SubscriptionService(locals.pb);
+		await subscriptionService.unsubscribe(premiereId);
+
+		return {
+			unsubscribeSucces: true
+		};
 	}
 } satisfies Actions;

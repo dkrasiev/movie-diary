@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { Premiere } from '@prisma/client';
+	import type { ExpandedPremiereResponse } from '@dkrasiev/movie-diary-core';
 	import PremiereCard from './PremiereCard.svelte';
 
-	export let premieres: Premiere[] = [];
+	export let premieres: ExpandedPremiereResponse[] = [];
 </script>
 
 <div class="grid gap-4">

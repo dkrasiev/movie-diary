@@ -1,56 +1,55 @@
-import type { Premiere, Subscription } from '@prisma/client';
-import prisma from '../prisma';
+import {
+	Collections,
+	type ExpandedPremiereResponse,
+	type SubscriptionsResponse
+} from '@dkrasiev/movie-diary-core';
+import type PocketBase from 'pocketbase';
+import type { RecordService } from 'pocketbase';
+
+type Texpand = {
+	premiere: ExpandedPremiereResponse;
+};
 
 export class SubscriptionService {
-	public async getUserPremieres(userId: string): Promise<Premiere[]> {
-		return prisma.subscription
-			.findMany({ where: { userId }, select: { premiere: true } })
-			.then((results) => results.map((result) => result.premiere));
+	private userId?: string;
+	private subscriptions: RecordService;
+
+	constructor(private pb: PocketBase) {
+		this.userId = this.pb.authStore.model?.id;
+		this.subscriptions = this.pb.collection(Collections.Subscriptions);
 	}
 
-	public async getSubscription(userId: string, premiereId: number): Promise<Subscription | null> {
-		return prisma.subscription.findFirst({ where: { userId, premiereId } });
+	public async getSubscriptionList(): Promise<SubscriptionsResponse<Texpand>[]> {
+		return this.subscriptions
+			.getFullList<SubscriptionsResponse<Texpand>>({
+				filter: `user = '${this.userId}'`,
+				expand: 'premiere.movie'
+			})
+			.catch(() => []);
 	}
 
-	public async toggleSubscription(userId: string, premiereId: number) {
-		const subscription = await prisma.subscription.findFirst({ where: { userId, premiereId } });
-
-		if (subscription) {
-			this.unsubscribeUserFromPremiere(userId, premiereId);
-		} else {
-			this.subscribeUserToPremiere(userId, premiereId);
-		}
+	public async getSubscription(premiereId: string): Promise<SubscriptionsResponse | undefined> {
+		return this.subscriptions
+			.getFirstListItem<SubscriptionsResponse>(
+				`user = '${this.userId}' && premiere = '${premiereId}'`
+			)
+			.catch(() => undefined);
 	}
 
-	public async subscribeUserToPremiere(
-		userId: string,
-		premiereId: number
-	): Promise<Subscription | undefined> {
-		return prisma.premiere.findUnique({ where: { id: premiereId } }).then((premiere) => {
-			if (premiere) {
-				return prisma.subscription.create({ data: { userId, premiereId: premiere?.id } });
-			}
-
-			return undefined;
+	public async subscribe(premiereId: string) {
+		return this.subscriptions.create<SubscriptionsResponse>({
+			user: this.pb.authStore.model?.id,
+			premiere: premiereId
 		});
 	}
 
-	public async unsubscribeUserFromPremiere(userId: string, premiereId: number) {
-		const subscription = await prisma.subscription.findFirst({
-			where: {
-				premiereId,
-				userId
-			}
-		});
+	public async unsubscribe(premiereId: string) {
+		const subscription = await this.pb
+			.collection(Collections.Subscriptions)
+			.getFirstListItem(`premiere = '${premiereId}'`);
 
 		if (subscription) {
-			return await prisma.subscription.delete({
-				where: {
-					id: subscription.id
-				}
-			});
+			return this.subscriptions.delete(subscription.id);
 		}
 	}
 }
-
-export default new SubscriptionService();

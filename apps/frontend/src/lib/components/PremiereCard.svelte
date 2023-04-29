@@ -1,12 +1,11 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import type { Premiere } from '@prisma/client';
+	import type { ExpandedPremiereResponse } from '@dkrasiev/movie-diary-core';
 
-	export let premiere: Premiere;
+	export let premiere: ExpandedPremiereResponse;
 </script>
 
 <a
-	style={`background-image: url('${premiere.posterUrlPreview}')`}
+	style={`background-image: url('${premiere.expand?.movie.posterUrlPreview}')`}
 	class="card bg-cover rounded aspect-[2/3] cursor-pointer"
 	href={`/premieres/${premiere.id}`}
 >

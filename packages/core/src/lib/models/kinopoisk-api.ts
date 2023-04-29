@@ -1,4 +1,4 @@
-export interface Movie {
+export interface Film {
   kinopoiskId: number;
   imdbId?: string;
 
@@ -70,7 +70,7 @@ export interface Movie {
   completed?: boolean;
 }
 
-export interface PremierResponseItem {
+export interface PremiereResponseItem {
   kinopoiskId: number;
   nameRu: string;
   nameEn: string;
