@@ -16,7 +16,6 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@prisma/client": "*",
     "@dkrasiev/movie-diary-core": "*",
     "amqplib": "^0.10.3",
     "dotenv": "^16.0.3",

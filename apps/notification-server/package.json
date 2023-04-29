@@ -17,7 +17,6 @@
   },
   "dependencies": {
     "@dkrasiev/movie-diary-core": "*",
-    "@prisma/client": "",
     "amqplib": "^0.10.3",
     "dayjs": "^1.11.7",
     "node-cron": "^3.0.2"

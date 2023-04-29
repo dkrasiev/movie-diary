@@ -4,8 +4,7 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "db:generate": "prisma generate"
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
@@ -14,7 +13,6 @@
     "eslint": "^7.32.0",
     "eslint-config-custom": "*",
     "prettier": "^2.5.1",
-    "prisma": "^4.13.0",
     "turbo": "latest"
   },
   "name": "movie-diary",
