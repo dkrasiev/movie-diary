@@ -1,4 +1,3 @@
-import { PrismaClient } from "@prisma/client";
 import nodemailer from "nodemailer";
 import amqp from "amqplib";
 import { MailService } from "./services/mail.service.js";
@@ -19,9 +18,6 @@ const transport = nodemailer.createTransport({
 });
 const mailService = new MailService(transport);
 
-const prisma = new PrismaClient();
-await prisma.$connect();
-
 function generateHtml(data: string): string {
   return `
   <h1>${data}</h1>
@@ -41,14 +37,14 @@ channel.consume(QUEUE, async (message) => {
         throw new Error("userId or kinopoiskId not found");
       }
 
-      const user = await prisma.user.findUnique({ where: { id: userId } });
-      if (!user) {
-        throw new Error("user not found");
-      }
+      // const user = await prisma.user.findUnique({ where: { id: userId } });
+      // if (!user) {
+      //   throw new Error("user not found");
+      // }
 
       const html = generateHtml(kinopoiskId);
 
-      await mailService.sendMail(user.email, html, kinopoiskId);
+      // await mailService.sendMail(user.email, html, kinopoiskId);
       channel.ack(message);
     } catch (e) {
       console.error(e);
