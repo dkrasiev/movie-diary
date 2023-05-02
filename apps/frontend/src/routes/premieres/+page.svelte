@@ -1,9 +1,8 @@
 <script lang="ts">
 	import PremiereGrid from '$lib/components/PremiereGrid.svelte';
 	import { Month } from '@dkrasiev/movie-diary-core';
-	import type { PageServerData } from './$types';
 
-	export let data: PageServerData;
+	export let data;
 
 	let year: number = data.year;
 	let month: Month = data.month;

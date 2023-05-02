@@ -1,10 +1,9 @@
+import premiereUpdateService from '$lib/server/services/premiere-update.service';
 import { PremiereService } from '$lib/server/services/premiere.service.js';
 import { getMonthById, isMonth } from '@dkrasiev/movie-diary-core';
 import { redirect } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
-import premiereUpdateService from '$lib/server/services/premiere-update.service';
 
-export const load = (async ({ url, locals }) => {
+export async function load({ url, locals }) {
 	const year = Number(url.searchParams.get('year'));
 	const month = url.searchParams.get('month');
 
@@ -30,4 +29,4 @@ export const load = (async ({ url, locals }) => {
 		year,
 		month
 	};
-}) satisfies PageServerLoad;
+}

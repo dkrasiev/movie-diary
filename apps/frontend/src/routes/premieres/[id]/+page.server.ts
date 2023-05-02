@@ -1,8 +1,7 @@
 import { PremiereService } from '$lib/server/services/premiere.service';
 import { SubscriptionService } from '$lib/server/services/subscription.service';
-import type { Actions, PageServerLoad } from './$types';
 
-export const load = (async ({ params, locals }) => {
+export async function load({ params, locals }) {
 	const premiereId = params.id;
 
 	const premiereService = new PremiereService(locals.pb);
@@ -14,7 +13,7 @@ export const load = (async ({ params, locals }) => {
 		premiere: premiere,
 		subscription: subscription
 	};
-}) satisfies PageServerLoad;
+}
 
 export const actions = {
 	subscribe: async ({ params, locals }) => {
@@ -38,4 +37,4 @@ export const actions = {
 			unsubscribeSucces: true
 		};
 	}
-} satisfies Actions;
+};

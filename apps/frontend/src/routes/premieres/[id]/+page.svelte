@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import type { PageServerData } from './$types';
 	import dayjs from 'dayjs';
 
-	export let data: PageServerData;
+	export let data;
 
 	const premiere = data.premiere;
 	const movie = data.premiere.expand?.movie;
@@ -50,5 +49,3 @@
 {:else}
 	<h2>Premiere not found</h2>
 {/if}
-
-<!-- <pre>{JSON.stringify(premiere, undefined, 2)}</pre> -->

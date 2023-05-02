@@ -1,7 +1,6 @@
 import { Collections } from '@dkrasiev/movie-diary-core';
 import { error, redirect } from '@sveltejs/kit';
 import { ClientResponseError } from 'pocketbase';
-import type { Actions } from './$types.js';
 
 export const actions = {
 	default: async ({ request, locals }) => {
@@ -36,4 +35,4 @@ export const actions = {
 
 		throw redirect(302, '/');
 	}
-} satisfies Actions;
+};

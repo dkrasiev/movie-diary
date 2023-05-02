@@ -1,9 +1,8 @@
 <script lang="ts">
 	import PremiereGrid from '$lib/components/PremiereGrid.svelte';
 	import type { ExpandedPremiereResponse } from '@dkrasiev/movie-diary-core';
-	import type { PageServerData } from './$types';
 
-	export let data: PageServerData;
+	export let data;
 
 	const premieres: ExpandedPremiereResponse[] = data.subscriptions.map(
 		(subscription) => subscription.expand?.premiere

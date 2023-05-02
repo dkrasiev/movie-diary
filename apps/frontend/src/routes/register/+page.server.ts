@@ -1,6 +1,5 @@
-import { error, redirect } from '@sveltejs/kit';
-import type { Actions } from './$types.js';
 import { Collections } from '@dkrasiev/movie-diary-core';
+import { error, redirect } from '@sveltejs/kit';
 import { ClientResponseError } from 'pocketbase';
 
 export const actions = {
@@ -30,4 +29,4 @@ export const actions = {
 
 		throw redirect(303, '/login');
 	}
-} satisfies Actions;
+};
