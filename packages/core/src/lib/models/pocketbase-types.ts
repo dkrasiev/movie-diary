@@ -67,6 +67,7 @@ export enum MoviesProductionStatusOptions {
   "POST_PRODUCTION" = "POST_PRODUCTION",
 }
 export type MoviesRecord = {
+  kinopoiskId?: number;
   nameRu?: string;
   nameEn?: string;
   nameOriginal?: string;

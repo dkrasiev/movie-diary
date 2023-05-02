@@ -2,13 +2,11 @@ import { PremiereService } from '$lib/server/services/premiere.service.js';
 import { getMonthById, isMonth } from '@dkrasiev/movie-diary-core';
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import kinopoiskApiService from '$lib/server/services/kinopoisk-api.service';
+import premiereUpdateService from '$lib/server/services/premiere-update.service';
 
 export const load = (async ({ url, locals }) => {
 	const year = Number(url.searchParams.get('year'));
 	const month = url.searchParams.get('month');
-
-	const premiereService = new PremiereService(kinopoiskApiService, locals.pb);
 
 	if (!year || !isMonth(month)) {
 		throw redirect(
@@ -22,6 +20,9 @@ export const load = (async ({ url, locals }) => {
 		);
 	}
 
+	await premiereUpdateService.udpatePremieres(year, month);
+
+	const premiereService = new PremiereService(locals.pb);
 	const premieres = await premiereService.getPremiereList(year, month);
 
 	return {

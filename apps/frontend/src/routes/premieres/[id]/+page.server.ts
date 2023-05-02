@@ -1,4 +1,3 @@
-import kinopoiskApiService from '$lib/server/services/kinopoisk-api.service';
 import { PremiereService } from '$lib/server/services/premiere.service';
 import { SubscriptionService } from '$lib/server/services/subscription.service';
 import type { Actions, PageServerLoad } from './$types';
@@ -6,7 +5,7 @@ import type { Actions, PageServerLoad } from './$types';
 export const load = (async ({ params, locals }) => {
 	const premiereId = params.id;
 
-	const premiereService = new PremiereService(kinopoiskApiService, locals.pb);
+	const premiereService = new PremiereService(locals.pb);
 
 	const premiere = structuredClone(await premiereService.getPremiere(premiereId));
 	const subscription = premiere.expand?.['subscriptions(premiere)']?.[0];

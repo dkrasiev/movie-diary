@@ -1,5 +1,5 @@
-import { env } from '$env/dynamic/private';
-import type { Month, Film, PremiereResponseItem } from '@dkrasiev/movie-diary-core';
+import { KINOPOISK_API_TOKEN } from '$env/static/private';
+import type { Film, Month, PremiereResponseItem } from '@dkrasiev/movie-diary-core';
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
 import { RedisCache } from '../redis-cache';
@@ -43,4 +43,4 @@ export class KinopoiskApiService {
 	}
 }
 
-export default new KinopoiskApiService(env.KINOPOISK_API_TOKEN);
+export default new KinopoiskApiService(KINOPOISK_API_TOKEN);
