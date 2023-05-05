@@ -19,7 +19,7 @@ export class PremierUpdateService {
 		this.movies = this.pb.collection(Collections.Movies);
 	}
 
-	public async udpatePremieres(year: number, month: Month) {
+	public async updatePremieres(year: number, month: Month) {
 		const premieres = await this.kinopoiskApiService.getPremieres(year, month);
 		const premieresFromDb = await this.getPremieresWithMovie(year, month);
 
@@ -28,7 +28,9 @@ export class PremierUpdateService {
 			(premiere) => idsFromDb.includes(premiere.kinopoiskId) === false
 		);
 
-		console.warn('not in database', notInDb);
+		if (notInDb.length > 0) {
+			console.warn('not in database', notInDb);
+		}
 
 		for (const premiere of notInDb) {
 			await this.createPremiere(premiere.kinopoiskId, premiere.premiereRu, year, month);
