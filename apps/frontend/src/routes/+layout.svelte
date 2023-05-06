@@ -17,6 +17,10 @@
 	const duration = 300;
 </script>
 
+<svelte:head>
+	<title>Movie Diary</title>
+</svelte:head>
+
 <AppShell>
 	<svelte:fragment slot="header">
 		<Header />

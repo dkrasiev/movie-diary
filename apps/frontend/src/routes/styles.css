@@ -14,11 +14,3 @@ h3 {
 	font-size: 1.25rem;
 	margin-bottom: 1rem;
 }
-
-.input {
-	@apply p-2;
-}
-
-.select {
-	@apply rounded-token;
-}
