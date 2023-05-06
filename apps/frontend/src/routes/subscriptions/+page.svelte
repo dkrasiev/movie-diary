@@ -9,10 +9,14 @@
 	) as ExpandedPremiereResponse[];
 </script>
 
-<h1>Your subscriptions</h1>
+<svelte:head>
+	<title>Подписки</title>
+</svelte:head>
+
+<h1>Ваши подписки</h1>
 
 {#if premieres.length > 0}
 	<PremiereGrid {premieres} />
 {:else}
-	<h2>Your subscription list is empty</h2>
+	<h2>Список подписок пуст.</h2>
 {/if}

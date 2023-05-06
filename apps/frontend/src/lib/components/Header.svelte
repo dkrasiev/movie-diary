@@ -29,9 +29,19 @@
 
 <AppBar gridColumns="grid-cols-3" slotDefault="place-self-center" slotTrail="place-content-end">
 	<svelte:fragment slot="lead">
-		<a href="/"> Movie Diary </a>
+		<a class="hidden sm:block" href="/"> Movie Diary </a>
+		<nav class="sm:hidden">
+			<ul class="flex">
+				{#each routes as route}
+					<li class="mx-2" aria-current={route.checkPath($page.url.pathname) ? 'page' : undefined}>
+						<a href={route.path}>{route.name}</a>
+					</li>
+				{/each}
+			</ul>
+		</nav>
 	</svelte:fragment>
-	<nav>
+
+	<nav class="hidden sm:block">
 		<ul class="flex">
 			{#each routes as route}
 				<li class="mx-2" aria-current={route.checkPath($page.url.pathname) ? 'page' : undefined}>

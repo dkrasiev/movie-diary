@@ -39,13 +39,30 @@ const redirectRootToPremieres: Handle = ({ event, resolve }) => {
 	return resolve(event);
 };
 
-const guardRoutes = ['/login', '/register', '/subscriptions'];
+const authGuardRoutes = ['/login', '/register'];
 const redirectAuthUser: Handle = ({ event, resolve }) => {
-	if (event.locals.user && guardRoutes.some((route) => event.url.pathname.startsWith(route))) {
+	if (event.locals.user && authGuardRoutes.some((route) => event.url.pathname.startsWith(route))) {
 		throw redirect(302, '/premieres');
 	}
 
 	return resolve(event);
 };
 
-export const handle = sequence(redirectRootToPremieres, authenticateUser, redirectAuthUser);
+const notAuthGuardRoutes = ['/subscriptions'];
+const redirectNotAuthUser: Handle = ({ event, resolve }) => {
+	if (
+		!event.locals.user &&
+		notAuthGuardRoutes.some((route) => event.url.pathname.startsWith(route))
+	) {
+		throw redirect(302, '/premieres');
+	}
+
+	return resolve(event);
+};
+
+export const handle = sequence(
+	redirectRootToPremieres,
+	authenticateUser,
+	redirectAuthUser,
+	redirectNotAuthUser
+);

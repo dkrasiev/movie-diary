@@ -4,7 +4,7 @@
 
 <h1>Вход</h1>
 
-<div>
+<div class="text-center mb-4">
 	Если у Вас нет аккаунта, можете <a href="/register">зарегистрироваться</a>
 </div>
 
