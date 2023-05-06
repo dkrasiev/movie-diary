@@ -1,32 +1,29 @@
 <script lang="ts">
 	export let form;
-
-	let email: string = '';
-	let password: string = '';
 </script>
 
-<h1>Login</h1>
+<h1>Вход</h1>
 
 <div>
-	<a href="/register">Sign up</a>
+	Если у Вас нет аккаунта, можете <a href="/register">зарегистрироваться</a>
 </div>
 
 <form class="max-w-md mx-auto [&>*]:mb-2" method="post">
 	<label class="label">
-		<span>Username or email</span>
-		<input class="input" name="identity" type="text" required bind:value={email} />
+		<span>Имя пользователя или почта</span>
+		<input class="input" name="identity" type="text" required value={form?.data?.identity || ''} />
 	</label>
 
 	<label class="label">
-		<span>Password</span>
-		<input class="input" name="password" type="password" required bind:value={password} />
+		<span>Пароль</span>
+		<input class="input" name="password" type="password" required />
 	</label>
 
-	<button class="btn w-full">Log In</button>
+	<button class="btn w-full">Войти</button>
 </form>
 
 {#if form?.errors}
-	{#each Object.entries(form.errors) as [key, { message }]}
+	{#each Object.entries(form.errors) as [key, message]}
 		<div class="alert-message variant-ghost-error p-4 card my-2 max-w-xl mx-auto">
 			<h3>{key}</h3>
 			<p>{message}</p>

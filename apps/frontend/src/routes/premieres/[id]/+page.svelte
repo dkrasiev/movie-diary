@@ -12,7 +12,7 @@
 </script>
 
 <ol class="breadcrumb mb-4">
-	<li class="crumb"><a href="/premieres">Premieres</a></li>
+	<li class="crumb"><a href="/premieres">Премьеры</a></li>
 	{#if movie}
 		<li class="crumb-separator" aria-hidden>&rsaquo;</li>
 		<li class="crumb">{name}</li>
@@ -29,13 +29,13 @@
 			{#if $page.data.user && movie && released === false}
 				{#if !data.subscription}
 					<form class="mb-4" action="?/subscribe" method="post">
-						<button class="btn variant-filled-primary"> Subscribe </button>
+						<button class="btn variant-filled-primary"> Подписаться </button>
 					</form>
 				{/if}
 
 				{#if data.subscription}
 					<form class="mb-4" action="?/unsubscribe" method="post">
-						<button class="btn variant-filled-primary"> Unsubscribe </button>
+						<button class="btn variant-filled-primary"> Отписаться </button>
 					</form>
 
 					<h3>Your subscription</h3>
@@ -47,5 +47,5 @@
 		</div>
 	</div>
 {:else}
-	<h2>Premiere not found</h2>
+	<h2>Премьера не найдена</h2>
 {/if}

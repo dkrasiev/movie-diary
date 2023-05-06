@@ -1,32 +1,17 @@
-import { Collections } from '@dkrasiev/movie-diary-core';
-import { error, redirect } from '@sveltejs/kit';
-import { ClientResponseError } from 'pocketbase';
+import authService from '$lib/server/services/auth.service.js';
+import { fail, redirect } from '@sveltejs/kit';
 
 export const actions = {
-	default: async ({ request, locals }) => {
-		const { username, email, password, passwordConfirm } = Object.fromEntries(
-			await request.formData()
-		);
-
-		if (typeof email !== 'string') {
-			throw error(400, 'Wrong email');
-		}
-
+	default: async (event) => {
 		try {
-			await locals.pb
-				.collection(Collections.Users)
-				.create({ username, email, password, passwordConfirm });
-			await locals.pb.collection(Collections.Users).requestVerification(email);
-		} catch (e) {
-			console.error(e);
-
-			if (e instanceof ClientResponseError) {
-				return { errors: e.data.data };
+			const result = await authService.register(event);
+			if (result?.data.errors) {
+				return result.data;
 			}
 
-			throw error(500, 'Something went wrong');
+			throw redirect(303, '/login');
+		} catch (e) {
+			return fail(500, { errors: { error: 'Неизвестная ошибка' } });
 		}
-
-		throw redirect(303, '/login');
 	}
 };

@@ -9,18 +9,18 @@
 	}
 
 	const routes: Route[] = [
-		{ name: 'Premieres', path: '/premieres', checkPath: (url) => url.startsWith('/premieres') }
+		{ name: 'Премьеры', path: '/premieres', checkPath: (url) => url.startsWith('/premieres') }
 	];
 
 	if ($page.data.user) {
 		routes.push({
-			name: 'Subscriptions',
+			name: 'Подписки',
 			path: '/subscriptions',
 			checkPath: (url) => url.startsWith('/subscriptions')
 		});
 	} else {
 		routes.push({
-			name: 'Auth',
+			name: 'Авторизация',
 			path: '/login',
 			checkPath: (url) => url.startsWith('/login') || url.startsWith('/register')
 		});
@@ -44,7 +44,7 @@
 	<svelte:fragment slot="trail">
 		{#if $page.data.user}
 			<form action="/logout" method="post">
-				<button class="btn">Log out</button>
+				<button class="btn">Выйти</button>
 			</form>
 		{/if}
 		<LightSwitch />
