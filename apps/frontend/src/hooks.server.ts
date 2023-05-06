@@ -39,4 +39,13 @@ const redirectRootToPremieres: Handle = ({ event, resolve }) => {
 	return resolve(event);
 };
 
-export const handle = sequence(redirectRootToPremieres, authenticateUser);
+const guardRoutes = ['/login', '/register', '/subscriptions'];
+const redirectAuthUser: Handle = ({ event, resolve }) => {
+	if (event.locals.user && guardRoutes.some((route) => event.url.pathname.startsWith(route))) {
+		throw redirect(302, '/premieres');
+	}
+
+	return resolve(event);
+};
+
+export const handle = sequence(redirectRootToPremieres, authenticateUser, redirectAuthUser);

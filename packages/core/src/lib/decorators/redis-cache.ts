@@ -1,7 +1,14 @@
-import type { RequireAtLeastOne } from "../types/require-at-lease-one.js";
-import type { Redis } from "ioredis";
+import { Redis } from "ioredis";
 
-type RedisCacheOptions<Args extends unknown[]> = RequireAtLeastOne<
+type RequireAtLeastOne<T, Keys extends keyof T = keyof T> = Pick<
+  T,
+  Exclude<keyof T, Keys>
+> &
+  {
+    [K in Keys]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<Keys, K>>>;
+  }[Keys];
+
+type RedisCacheOptions<Args extends unknown[] = unknown[]> = RequireAtLeastOne<
   {
     prefix: string;
     delimiter?: string;
@@ -10,17 +17,41 @@ type RedisCacheOptions<Args extends unknown[]> = RequireAtLeastOne<
   "prefix" | "keyFn"
 >;
 
+interface RedisCacheFactoryOptions {
+  debug?: boolean;
+  globalPrefix?: string;
+  ttl?: number;
+}
+
 /**
  * Returns RedisCache decorator
  * @param redis Redis client
  * @param debug Enable log to console
  * @returns
  */
-export function RedisCacheFactory(redis: Redis, debug = false) {
+export function RedisCacheFactory(
+  redis: Redis,
+  { globalPrefix, debug, ttl }: RedisCacheFactoryOptions = { debug: false }
+) {
+  const defaultOptions: Partial<RedisCacheOptions> = {
+    delimiter: ":",
+  };
+
   return function RedisCache<Args extends unknown[], Return>(
-    options: RedisCacheOptions<Args>
+    options?: RedisCacheOptions<Args>
   ) {
-    const { prefix, keyFn, delimiter } = options;
+    const { prefix, delimiter, keyFn } = {
+      ...defaultOptions,
+      ...options,
+    };
+
+    function getKey(...args: Args) {
+      if (keyFn) {
+        return [globalPrefix, keyFn(...args)].filter(Boolean).join(delimiter);
+      }
+
+      return [globalPrefix, prefix, ...args].filter(Boolean).join(delimiter);
+    }
 
     return function (
       target: unknown,
@@ -36,10 +67,7 @@ export function RedisCacheFactory(redis: Redis, debug = false) {
 
       if (typeof originalMethod === "function") {
         descriptor.value = async function (...args: Args) {
-          const key = keyFn
-            ? keyFn(...args)
-            : [prefix, ...args].join(delimiter || ":");
-          log("args:", args);
+          const key = getKey(...args);
           log("key:", key);
 
           const redisData = await redis.call("JSON.GET", key, "$");
@@ -56,6 +84,9 @@ export function RedisCacheFactory(redis: Redis, debug = false) {
           if (result) {
             log("caching");
             await redis.call("JSON.SET", key, "$", JSON.stringify(result));
+            if (ttl) {
+              await redis.expire(key, ttl);
+            }
           }
 
           return result;

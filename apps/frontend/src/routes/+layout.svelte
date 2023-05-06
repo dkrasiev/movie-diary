@@ -8,6 +8,13 @@
 
 	import Header from '$lib/components/Header.svelte';
 	import { AppShell } from '@skeletonlabs/skeleton';
+
+	import { fly } from 'svelte/transition';
+
+	export let data;
+
+	const x = 200;
+	const duration = 300;
 </script>
 
 <AppShell>
@@ -16,6 +23,10 @@
 	</svelte:fragment>
 
 	<main class="container mx-auto p-4">
-		<slot />
+		{#key data.pathname}
+			<div in:fly={{ x: -x, duration, delay: duration }} out:fly={{ x, duration }}>
+				<slot />
+			</div>
+		{/key}
 	</main>
 </AppShell>
