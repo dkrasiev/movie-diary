@@ -9,7 +9,6 @@
 	let loading = false;
 
 	function submit() {
-		console.log('submit');
 		loading = true;
 		form.submit();
 	}
@@ -61,25 +60,14 @@
 	</div>
 </form>
 
-<!-- <form
-	class="input-group input-group-divider grid-cols-[auto_1fr] max-w-xs mb-4"
-	bind:this={form}
-	on:change={submit}
->
-	<div class="input-group-shim">Год</div>
-	<input id="year" name="year" type="number" value={data.year} />
-
-	<div class="input-group-shim">Месяц</div>
-	<select id="month" name="month" value={data.month}>
-		{#each Array.from(monthMap) as [key, value]}
-			<option value={key}>{value}</option>
-		{/each}
-	</select>
-</form> -->
-
 {#if loading}
-	<div class="mx-auto">
-		<ProgressRadial stroke={100} meter="stroke-primary-500" track="stroke-primary-500/30" />
+	<div class="flex justify-center">
+		<ProgressRadial
+			width="w-36"
+			stroke={100}
+			meter="stroke-primary-500"
+			track="stroke-primary-500/30"
+		/>
 	</div>
 {:else if data.premieres?.length > 0}
 	<PremiereGrid premieres={data.premieres} />

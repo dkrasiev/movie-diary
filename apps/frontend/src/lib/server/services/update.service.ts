@@ -20,21 +20,28 @@ export class PremierUpdateService {
 	}
 
 	public async updatePremieres(year: number, month: Month) {
-		const premieres = await this.kinopoiskApiService.getPremieres(year, month);
+		const premieresFromApi = await this.kinopoiskApiService.getPremieres(year, month);
 		const premieresFromDb = await this.getPremieresWithMovie(year, month);
 
 		const idsFromDb = premieresFromDb.map((premiere) => premiere.expand?.movie?.kinopoiskId);
-		const notInDb = premieres.filter(
+		const notInDb = premieresFromApi.filter(
 			(premiere) => idsFromDb.includes(premiere.kinopoiskId) === false
 		);
 
-		if (notInDb.length > 0) {
-			console.warn('not in database', notInDb);
+		if (notInDb.length === 0) {
+			return;
 		}
 
-		for (const premiere of notInDb) {
-			await this.createPremiere(premiere.kinopoiskId, premiere.premiereRu, year, month);
-		}
+		console.warn(
+			'not in database',
+			notInDb.map((premiere) => premiere.kinopoiskId)
+		);
+
+		await Promise.all(
+			notInDb.map((premiere) =>
+				this.createPremiere(premiere.kinopoiskId, premiere.premiereRu, year, month)
+			)
+		);
 	}
 
 	private async createPremiere(
@@ -43,9 +50,13 @@ export class PremierUpdateService {
 		year: number,
 		month: Month
 	) {
+		console.log('creating', year, month, kinopoiskId);
 		const movie = await this.getOrCreateMovie(kinopoiskId);
 		if (movie) {
-			return this.premieres.create({ movie: movie.id, premiereRu, year, month });
+			return this.premieres.create({ movie: movie.id, premiereRu, year, month }).catch((e) => {
+				console.error('pocketbase error', e?.response?.data);
+				throw e;
+			});
 		}
 	}
 

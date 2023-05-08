@@ -60,7 +60,7 @@ export function RedisCacheFactory(
     ) {
       function log(...args: unknown[]) {
         if (debug) {
-          console.log("REDIS CACHE:", ...args);
+          console.log("REDIS CACHE", ...args);
         }
       }
       const originalMethod = descriptor.value;
@@ -68,18 +68,17 @@ export function RedisCacheFactory(
       if (typeof originalMethod === "function") {
         descriptor.value = async function (...args: Args) {
           const key = getKey(...args);
-          log("key:", key);
 
           const redisData = await redis.call("JSON.GET", key, "$");
           if (typeof redisData === "string") {
             const cache = JSON.parse(redisData)[0] as Return;
             if (cache) {
-              log("cache hit");
+              log("hit", key);
               return cache;
             }
           }
 
-          log("cache miss");
+          log("miss", key);
           const result = await originalMethod.call(this, ...args);
           if (result) {
             log("caching");

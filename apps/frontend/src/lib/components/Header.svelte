@@ -27,7 +27,7 @@
 	}
 </script>
 
-<AppBar gridColumns="grid-cols-3" slotDefault="place-self-center" slotTrail="place-content-end">
+<AppBar slotDefault="place-self-center">
 	<svelte:fragment slot="lead">
 		<a class="hidden sm:block" href="/"> Movie Diary </a>
 		<nav class="sm:hidden">
@@ -57,7 +57,7 @@
 				<button class="btn">Выйти</button>
 			</form>
 		{/if}
-		<LightSwitch />
+		<!-- <LightSwitch /> -->
 	</svelte:fragment>
 </AppBar>
 

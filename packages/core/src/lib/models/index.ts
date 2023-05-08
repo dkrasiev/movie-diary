@@ -1,4 +1,4 @@
-export * from "./kinopoisk-api.js";
+export * from "./kinopoisk-api-types.js";
 export * from "./month.js";
 export * from "./pocketbase-types.js";
 export * from "./premier-update-dto.js";
