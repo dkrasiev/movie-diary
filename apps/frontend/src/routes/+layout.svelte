@@ -14,7 +14,7 @@
 	export let data;
 
 	const x = 200;
-	const duration = 300;
+	const duration = 200;
 </script>
 
 <svelte:head>
