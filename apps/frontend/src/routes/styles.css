@@ -1,6 +1,10 @@
 @font-face {
-	font-family: 'Abril Fatface';
-	src: url('/fonts/AbrilFatface-Regular.ttf');
+	font-family: 'Noto Serif';
+	src: url('/fonts/NotoSerif-Regular.ttf');
+}
+
+:root {
+	--theme-font-family-heading: 'Noto Serif', serif;
 }
 
 h1 {
