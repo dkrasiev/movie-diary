@@ -5,7 +5,6 @@
 	import '@skeletonlabs/skeleton/styles/all.css';
 	// global stylesheet
 	import './styles.css';
-	import { browser } from '$app/environment';
 
 	import Header from '$lib/components/Header.svelte';
 	import { AppShell } from '@skeletonlabs/skeleton';

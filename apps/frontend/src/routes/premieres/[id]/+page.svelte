@@ -33,7 +33,11 @@
 
 {#if movie}
 	<div class="sm:grid sm:grid-cols-[20rem_auto] sm:gap-x-8">
-		<img class="mb-8 aspect-[2/3] rounded-token" src={movie.posterUrl} alt={`${name} poster`} />
+		<img
+			class="mb-8 aspect-[2/3] rounded-container-token"
+			src={movie.posterUrl}
+			alt={`${name} poster`}
+		/>
 
 		<div>
 			<h1 class="text-left">{name}</h1>

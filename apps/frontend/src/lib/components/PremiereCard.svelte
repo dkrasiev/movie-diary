@@ -6,7 +6,7 @@
 
 <a
 	style={`background-image: url('${premiere.expand?.movie?.posterUrlPreview}')`}
-	class="card bg-cover rounded-token aspect-[2/3] cursor-pointer"
+	class="bg-cover rounded-container-token aspect-[2/3] cursor-pointer"
 	href={`/premieres/${premiere.id}`}
 >
 	<!---->
