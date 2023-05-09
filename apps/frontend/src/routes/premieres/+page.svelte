@@ -46,12 +46,23 @@
 	<div
 		class="input-group input-group-divider grid-cols-[8rem_auto] sm:max-w-sm sm:mr-2 mb-2 sm:mb-0"
 	>
-		<div class="input-group-shim">Год</div>
-		<input id="year" name="year" type="number" value={data.year} />
+		<div class="input-group-shim">
+			<label for="year">Год</label>
+		</div>
+		<input
+			id="year"
+			name="year"
+			type="number"
+			min="1960"
+			max={new Date().getFullYear()}
+			value={data.year}
+		/>
 	</div>
 
 	<div class="input-group input-group-divider grid-cols-[8rem_auto] sm:max-w-sm">
-		<div class="input-group-shim">Месяц</div>
+		<div class="input-group-shim">
+			<label for="month">Месяц</label>
+		</div>
 		<select id="month" name="month" value={data.month}>
 			{#each Array.from(monthMap) as [key, value]}
 				<option value={key}>{value}</option>
@@ -65,8 +76,8 @@
 		<ProgressRadial
 			width="w-36"
 			stroke={100}
-			meter="stroke-primary-500"
-			track="stroke-primary-500/30"
+			meter="stroke-primary-500/30"
+			track="stroke-primary-500/60"
 		/>
 	</div>
 {:else if data.premieres?.length > 0}

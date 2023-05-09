@@ -16,6 +16,7 @@ export class PremiereService {
 	}
 
 	public async getPremiereList(year: number, month: Month): Promise<ExpandedPremiereResponse[]> {
+		console.log('fetching', year, month);
 		return this.premieres.getFullList({
 			filter: `year = ${year} && month = '${month}'`,
 			expand: 'subscriptions(premiere),movie'

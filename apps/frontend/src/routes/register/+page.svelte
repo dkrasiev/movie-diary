@@ -4,8 +4,8 @@
 
 <h1>Регистрация</h1>
 
-<div class="text-center mb-4">
-	Если у Вас уже есть аккаунт, можете <a href="/login">войти</a>
+<div class="text-center mb-6">
+	Если у Вас уже есть аккаунт, то Вы можете <a href="/login">войти</a>
 </div>
 
 <form class="max-w-md mx-auto [&>*]:mb-2" method="post">

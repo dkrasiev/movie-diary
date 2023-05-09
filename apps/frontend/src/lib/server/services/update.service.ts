@@ -82,7 +82,6 @@ export class PremierUpdateService {
 
 	private async createMovie(kinopoiskId: number): Promise<MoviesResponse | undefined> {
 		const movie = await this.kinopoiskApiService.getMovie(kinopoiskId);
-
 		if (movie) {
 			return this.movies.create<MoviesResponse>(movie);
 		}
