@@ -1,30 +1,21 @@
 import amqplib from "amqplib";
 import * as cron from "node-cron";
-import { NotificationService } from "./services/notification.service.js";
+import pocketbaseClient from "./pocketbase-client.js";
+import { SubscriptionNotificationService } from "./services/subscription-notification.service.js";
 
 const EXCHANGE = "subscription_updates";
 
-amqplib
+const channel = await amqplib
   .connect("amqp://localhost")
-  .then((connection) => connection.createChannel())
-  .then(async (channel) => {
-    const notificationService = new NotificationService(channel, EXCHANGE);
+  .then((connection) => connection.createChannel());
 
-    async function check() {
-      console.log("checking");
-      const updates = await notificationService.checkUpdates();
+const subscriptionNotificationService = new SubscriptionNotificationService(
+  channel,
+  EXCHANGE,
+  pocketbaseClient
+);
 
-      for (const { userId, premiereId } of updates) {
-        console.log("send for user", userId, "and movie", premiereId);
-        notificationService.publish({ userId, premiereId });
-        // await prisma.subscription.deleteMany({
-        //   where: { userId, premiereId },
-        // });
-      }
-    }
-
-    check();
-
-    // раз в сутки, в 12 часов
-    cron.schedule("0 12 * * *", check);
-  });
+// раз в сутки, в 08:00 часов
+cron.schedule("0 8 * * *", () =>
+  subscriptionNotificationService.publishSubscriptionsWithReleasedPremiere()
+);

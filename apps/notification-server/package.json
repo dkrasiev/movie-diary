@@ -19,6 +19,7 @@
     "@dkrasiev/movie-diary-core": "*",
     "amqplib": "^0.10.3",
     "dayjs": "^1.11.7",
-    "node-cron": "^3.0.2"
+    "node-cron": "^3.0.2",
+    "pocketbase": "^0.14.4"
   }
 }

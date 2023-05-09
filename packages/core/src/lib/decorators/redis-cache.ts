@@ -81,7 +81,7 @@ export function RedisCacheFactory(
           log("miss", key);
           const result = await originalMethod.call(this, ...args);
           if (result) {
-            log("caching");
+            log("caching", key);
             await redis.call("JSON.SET", key, "$", JSON.stringify(result));
             if (ttl) {
               await redis.expire(key, ttl);
