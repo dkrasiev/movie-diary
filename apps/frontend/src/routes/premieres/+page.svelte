@@ -2,6 +2,7 @@
 	import PremiereGrid from '$lib/components/PremiereGrid.svelte';
 	import { Month } from '@dkrasiev/movie-diary-core';
 	import { ProgressRadial } from '@skeletonlabs/skeleton';
+	import dayjs from 'dayjs';
 
 	export let data;
 
@@ -81,7 +82,11 @@
 		/>
 	</div>
 {:else if data.premieres?.length > 0}
-	<PremiereGrid premieres={data.premieres} />
+	<PremiereGrid
+		premieres={data.premieres.filter(
+			(premiere) => String(premiere.premiereRu) > dayjs().format('DD-MM-YYYY')
+		)}
+	/>
 {:else}
 	<h3>Ничего не найдено</h3>
 {/if}

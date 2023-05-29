@@ -3,8 +3,6 @@
 
 	import dayjs from 'dayjs';
 	import 'dayjs/locale/ru';
-	import localizedFormat from 'dayjs/plugin/localizedFormat';
-	dayjs.extend(localizedFormat);
 
 	export let data;
 
@@ -21,7 +19,7 @@
 		['Описание', movie?.description],
 		[
 			released ? 'Вышел в кино' : 'Выходит в кино',
-			dayjs(premiere.premiereRu).locale('ru').format('LL')
+			dayjs(premiere.premiereRu).locale('ru').format('D MMMM YYYY')
 		],
 		['Продолжительность фильма', movie?.filmLength ? `${movie.filmLength} мин.` : '']
 	];
@@ -36,7 +34,7 @@
 		<img
 			class="mb-8 aspect-[2/3] rounded-container-token"
 			src={movie.posterUrl}
-			alt={`${name} poster`}
+			alt={`${name} постер`}
 		/>
 
 		<div>

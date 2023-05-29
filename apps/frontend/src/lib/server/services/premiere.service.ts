@@ -17,9 +17,15 @@ export class PremiereService {
 
 	public async getPremiereList(year: number, month: Month): Promise<ExpandedPremiereResponse[]> {
 		console.log('fetching', year, month);
-		return this.premieres.getFullList({
-			filter: `year = ${year} && month = '${month}'`,
-			expand: 'subscriptions(premiere),movie'
-		});
+		return this.premieres
+			.getFullList<ExpandedPremiereResponse>({
+				filter: `year = ${year} && month = '${month}'`,
+				expand: 'subscriptions(premiere),movie'
+			})
+			.then((premieres) =>
+				premieres.sort((a, b) =>
+					a.premiereRu && b.premiereRu ? a.premiereRu.localeCompare(b.premiereRu) : 0
+				)
+			);
 	}
 }

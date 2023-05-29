@@ -14,13 +14,7 @@ export class SubscriptionNotificationService {
     private pocketbase: PocketBase
   ) {}
 
-  public async publishSubscriptionsWithReleasedPremiere() {
-    for (const subscription of await this.getSubscriptionsWithReleasedPremiere()) {
-      await this.publish(subscription);
-    }
-  }
-
-  private async getSubscriptionsWithReleasedPremiere() {
+  public async getUpdatedSubscriptions() {
     return this.pocketbase
       .collection(Collections.Subscriptions)
       .getFullList<ExpandedSubscriptionResponse>({
@@ -29,7 +23,7 @@ export class SubscriptionNotificationService {
       });
   }
 
-  private async publish(
+  public async publishSubscription(
     subscription: PremierUpdateDTO,
     routingKey: string = ""
   ) {

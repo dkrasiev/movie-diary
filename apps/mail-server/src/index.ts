@@ -3,10 +3,15 @@ import amqp from "amqplib";
 import nodemailer from "nodemailer";
 import { MailService } from "./services/mail.service.js";
 
+if (!process.env.RABBIT_URI) {
+  throw new Error("RABBIT_URI not found");
+}
+
 const QUEUE = "email_notifications";
 
-const connection = await amqp.connect("amqp://localhost");
-const channel = await connection.createChannel();
+const channel = await amqp
+  .connect(process.env.RABBIT_URI)
+  .then((connection) => connection.createChannel());
 
 const transport = nodemailer.createTransport({
   host: "smtp.gmail.com",
@@ -19,12 +24,6 @@ const transport = nodemailer.createTransport({
 });
 const mailService = new MailService(transport);
 
-function generateHtml(data: string): string {
-  return `
-    <h1>${data}</h1>
-  `;
-}
-
 console.log("consuming...");
 channel.consume(QUEUE, async (message) => {
   if (message) {
@@ -34,16 +33,7 @@ channel.consume(QUEUE, async (message) => {
 
       const subscription = JSON.parse(content) as PremierUpdateDTO;
 
-      const email = subscription.expand?.user.email;
-      const movie = subscription.expand?.premiere.expand?.movie;
-
-      if (!email || !movie) {
-        channel.nack(message);
-        throw new Error("user email or movie not found");
-      }
-
-      const html = generateHtml(String(movie.kinopoiskId));
-      await mailService.sendMail(email, html);
+      await mailService.sendNotification(subscription);
 
       channel.ack(message);
     } catch (e) {
