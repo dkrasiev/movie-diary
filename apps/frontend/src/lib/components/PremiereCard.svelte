@@ -2,7 +2,6 @@
 	import Icon from '@iconify/svelte';
 	import type { ExpandedPremiereResponse } from '@dkrasiev/movie-diary-core';
 	import dayjs from 'dayjs';
-	import('dayjs/locale/ru');
 
 	export let premiere: ExpandedPremiereResponse;
 
