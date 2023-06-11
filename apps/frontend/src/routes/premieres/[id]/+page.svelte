@@ -17,10 +17,7 @@
 		['Оригинальное название', movie?.nameOriginal],
 		['Слоган', movie?.slogan],
 		['Описание', movie?.description],
-		[
-			released ? 'Вышел в кино' : 'Выходит в кино',
-			dayjs(premiere.premiereRu).locale('ru').format('D MMMM YYYY')
-		],
+		[released ? 'Вышел в кино' : 'Выходит в кино', dayjs(premiere.premiereRu).format('DD.MM.YYYY')],
 		['Продолжительность фильма', movie?.filmLength ? `${movie.filmLength} мин.` : '']
 	];
 </script>
