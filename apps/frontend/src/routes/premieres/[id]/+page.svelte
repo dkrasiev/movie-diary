@@ -16,6 +16,7 @@
 		['Год производства', movie?.year],
 		['Оригинальное название', movie?.nameOriginal],
 		['Слоган', movie?.slogan],
+		['Рейтинг', movie?.ratingKinopoisk ? `${movie?.ratingKinopoisk} / 10` : ''],
 		['Описание', movie?.description],
 		[
 			released ? 'Вышел в кино' : 'Выходит в кино',
