@@ -6,7 +6,7 @@ import {
 import Mail from "nodemailer/lib/mailer";
 
 export class MailService {
-  constructor(private transport: Mail) {}
+  constructor(private transport: Mail) { }
 
   public async sendNotification(data: PremierUpdateDTO) {
     const email = data.expand?.user.email;
@@ -43,11 +43,13 @@ export class MailService {
       <body>
         <main>
           <h1>
-            Премьера "${movieName}"!
+            "${movieName}" выходит в кинотеатрах!
           </h1>
           <p>
-            Мы рады сообщить Вам о выходе новой премьеры в кинотеатрах!
-            "${movieName}" можно будет увидеть на больших экранах уже с этой недели.
+            Мы рады сообщить Вам о выходе фильма в кинотеатрах!
+          </p>
+          <p>
+            Фильм "${movieName}" можно будет увидеть на больших экранах уже завтра!
           </p>
           <p>Билеты уже в продаже!</p>
           <p>С уважением,<br />Команда Movie Diary.</p>
