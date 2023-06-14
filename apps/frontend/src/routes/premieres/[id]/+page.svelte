@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-
 	import dayjs from 'dayjs';
-	import 'dayjs/locale/ru';
 
 	export let data;
 
@@ -16,6 +14,7 @@
 		['Год производства', movie?.year],
 		['Оригинальное название', movie?.nameOriginal],
 		['Слоган', movie?.slogan],
+		['Рейтинг', movie?.ratingKinopoisk ? `${movie?.ratingKinopoisk} / 10` : ''],
 		['Описание', movie?.description],
 		[released ? 'Вышел в кино' : 'Выходит в кино', dayjs(premiere.premiereRu).format('DD.MM.YYYY')],
 		['Продолжительность фильма', movie?.filmLength ? `${movie.filmLength} мин.` : '']

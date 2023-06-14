@@ -66,6 +66,7 @@ export enum MoviesProductionStatusOptions {
   "UNKNOWN" = "UNKNOWN",
   "POST_PRODUCTION" = "POST_PRODUCTION",
 }
+
 export type MoviesRecord = {
   kinopoiskId?: number;
   nameRu?: string;
@@ -96,6 +97,8 @@ export type MoviesRecord = {
   serial?: boolean;
   shortFilm?: boolean;
   completed?: boolean;
+  ratingKinopoisk?: number;
+  ratingKinopoiskVoteCount?: number;
 };
 
 export type PremieresRecord = {

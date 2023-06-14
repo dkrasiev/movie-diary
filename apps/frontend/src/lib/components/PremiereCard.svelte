@@ -1,7 +1,7 @@
 <script lang="ts">
+	import Icon from '@iconify/svelte';
 	import type { ExpandedPremiereResponse } from '@dkrasiev/movie-diary-core';
 	import dayjs from 'dayjs';
-	import('dayjs/locale/ru');
 
 	export let premiere: ExpandedPremiereResponse;
 
@@ -22,6 +22,13 @@
 			{name}
 			<br />
 			{premiereDate}
+			<br />
+			{#if movie?.ratingKinopoisk}
+				<span class="flex items-center gap-1">
+					<Icon icon="lucide:star" />
+					{movie.ratingKinopoisk} / 10
+				</span>
+			{/if}
 		</span>
 
 		<!-- <form class="absolute bottom-0 right-2 -translate-y-2 transition duration-300">
@@ -35,7 +42,7 @@
 		@apply -translate-x-[100%];
 	}
 
-	a:not(:hover) > div > form {
+	/* a:not(:hover) > div > form {
 		@apply translate-y-[100%];
-	}
+	} */
 </style>
