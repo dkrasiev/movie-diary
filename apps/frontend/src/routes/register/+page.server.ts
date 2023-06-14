@@ -11,6 +11,12 @@ export const actions = {
 
 			throw redirect(303, '/login');
 		} catch (e) {
+			// TODO: fix typing error
+			if (String(e?.status).startsWith('3')) {
+				throw e;
+			}
+
+			console.error(e);
 			return fail(500, { errors: { error: 'Неизвестная ошибка' } });
 		}
 	}
